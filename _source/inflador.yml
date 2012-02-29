@@ -1,0 +1,13 @@
+bundles:
+    - Inflador\Bundle\InfladorBundle\InfladorBundle
+    - Inflador\Bundle\TwigBundle\TwigBundle
+
+inflador:
+    build_dir: %source_dir%/..
+    url: http://mandango.org
+    static:
+        extensions: [css, js, jpg, png, gif]
+        explicits: [CNAME]
+
+twig:
+    excludes: [views]
