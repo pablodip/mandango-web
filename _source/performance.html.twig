@@ -1,0 +1,28 @@
+{% extends 'views/layout.html.twig' %}
+
+{% block title %}Performance - Mandango{% endblock %}
+{% block menu_current_tab %}performance{% endblock %}
+
+{% block content %}
+    <h2>Performance</h2>
+    <p>
+        MongoDB is a very fast database, that's why the performance of the utilities we use to work with it is very important to take advantage of that speed.
+    </p>
+
+    <p>
+        We've made some test to compare <a href="{{ path('/') }}">Mandango</a> with <a href="http://www.doctrine-project.org/projects/mongodb_odm">DoctrineMongo</a>, another ODM.
+    </p>
+
+    <p>
+        The results show that Mandango is <strong>3-4x faster</strong> than DoctrineMongo, and Mandango uses <strong>40-60% less of memory</strong>.
+    </p>
+
+    <img src="{{ asset('images/performance.png') }}" />
+
+    <h2>Benchmark</h2>
+
+    <p>
+        The benchmark can be downloaded from github: <a href="https://github.com/pablodip/php-odm-benchmark">https://github.com/pablodip/php-odm-benchmark</a>
+    </p>
+
+{% endblock %}

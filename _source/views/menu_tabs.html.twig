@@ -1,0 +1,13 @@
+{% set tabs = {
+    'homepage':      { 'url': path('/'), 'text': 'Home' },
+    'performance':   { 'url': path('/performance.html'), 'text': 'Performance' },
+    'installation':  { 'url': path('/installation.html'), 'text': 'Installation' },
+    'documentation': { 'url': path('/documentation.html'), 'text': 'Documentation' },
+    'development':   { 'url': path('/development.html'), 'text': 'Development' },
+    'blog':          { 'url': path('/blog.html'), 'text': 'Blog' },
+    'about':         { 'url': path('/about.html'), 'text': 'About' },
+} %}
+
+{% for name, tab in tabs %}
+    <li><span{% if name == current %} class="current"{% endif %}><a href="{{ tab.url }}">{{ tab.text }}</a></span></li>
+{% endfor %}
