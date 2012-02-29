@@ -1,9 +1,8 @@
-bundles:
-    - Inflador\Bundle\InfladorBundle\InfladorBundle
-    - Inflador\Bundle\TwigBundle\TwigBundle
+pandles:
+    - Inflador\Pandle\InfladorPandle\InfladorPandle
+    - Inflador\Pandle\TwigPandle\TwigPandle
 
 inflador:
-    build_dir: %source_dir%/..
     url: http://mandango.org
     static:
         extensions: [css, js, jpg, png, gif]
