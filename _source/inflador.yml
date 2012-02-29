@@ -5,7 +5,7 @@ pandles:
 inflador:
     url: http://mandango.org
     static:
-        extensions: [css, js, jpg, png, gif]
+        extensions: [css, js, jpg, png, gif, ico]
         explicits: [CNAME]
 
 twig:
