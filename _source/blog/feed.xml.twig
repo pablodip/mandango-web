@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title>Mandango</title>
+    <subtitle>Latest Blog Posts</subtitle>
+    <link href="{{ url('/blog/feed.xml') }}" rel="self" />
+    <link href="{{ url('/') }}" />
+    <updated>{{ dynamic_last('blog').date | date('c') }}</updated>
+    <id>{{ url('/blog/feed.xml') | sha1 }}</id>
+    {% for post in dynamic('blog') %}
+        <entry>
+            <title>{{ post.title }}</title>
+            <link href="{{ url(post.path) }}" />
+            <id>{{ post.path | sha1 }}</id>
+            <updated>{{ post.date | date('c') }}</updated>
+            <content type="html"><![CDATA[{{ post.content|raw }}]]></content>
+            <author>
+                <name>{{ post.author }}</name>
+            </author>
+        </entry>
+    {% endfor %}
+</feed>

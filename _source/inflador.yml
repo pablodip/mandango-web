@@ -1,12 +1,37 @@
 pandles:
     - Inflador\Pandle\InfladorPandle\InfladorPandle
     - Inflador\Pandle\TwigPandle\TwigPandle
+    - Inflador\Pandle\SkriboPandle\SkriboPandle
+    - Inflador\Pandle\DynamicPandle\DynamicPandle
 
 inflador:
-    url: http://mandango.org
+    url:  http://mandango.org
+    path: /
     static:
         extensions: [css, js, jpg, png, gif, ico]
         explicits: [CNAME]
 
 twig:
+    options:
+        strict_variables: true
     excludes: [views]
+
+skribo:
+    parsers:
+        full_markdown:
+            - dragonfly_markdown
+            - markdown_code_pygments
+
+dynamic:
+    sites:
+        blog:
+            source_path: blog
+            extensions: [md]
+            order:
+                field:     date
+                direction: desc
+            defaults:
+                parser: full_markdown
+                layout: views/blog_post.html.twig
+                author: pablodip
+                permalink: %%date%%/%%file_name%%

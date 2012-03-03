@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <title>Say hello to the new Mondongo&#039;s Query</title>
+        <link rel="stylesheet" href="/css/yui.css">
+        <link rel="stylesheet" href="/css/mandango.css">
+        <link rel="stylesheet" href="/css/pygments.css">
+    </head>
+    <body class="yui-skin-sam">
+        <div class="wrapper">
+            <div id="doc4">
+                <div id="hd">
+                    <div id="mainHeader" class="clearfix">
+                        <h1 class="mainTitle">
+                            <a href="/"><img src="/images/logo.png" alt="Mandango" /></a>
+                        </h1>
+                        <div class="slogan">The easy, powerful and ultrafast ODM for PHP and MongoDB.</div>
+                        <ul id="mainNav" class="clearfix">
+                                                        
+    <li><span><a href="/">Home</a></span></li>
+    <li><span><a href="/performance.html">Performance</a></span></li>
+    <li><span><a href="/installation.html">Installation</a></span></li>
+    <li><span><a href="/documentation.html">Documentation</a></span></li>
+    <li><span><a href="/development.html">Development</a></span></li>
+    <li><span class="current"><a href="/blog/">Blog</a></span></li>
+    <li><span><a href="/about.html">About</a></span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="bd">
+                    <div class="mainContent">
+                            <div class="blog_post">
+        <div class="blog_post_title">
+            <h2>
+                <a href="/blog/2011/02/21/say-hello-to-the-new-mondongo-query.html">Say hello to the new Mondongo&#039;s Query</a>
+            </h2>
+        </div>
+        <div class="blog_post_info clearfix">
+            <span>Author: <strong>pablodip</strong></span>
+            <span>Date: February 21, 2011</span>
+        </div>
+        <div class="blog_post_content">
+            <p>I am really happy to announce the new Query of Mondongo. It is much more readable and human friendly.</p>
+
+<p>If you have used Mondongo, you probably realised that sometimes you have to type too much to be able to
+get simple results out of you database. And the same goes with <a href="http://spf13.com/post/symfony2">Symfony2 and DoctrineMongo</a>.
+Some people call this "explicit code", but should really the explicit code be so long? I am convinced the new Mondongo's Query
+is really explicit, maybe even more, and you can do things much faster. But as you don't have to believe me, I will show you ;)</p>
+
+<p>I am going to compare three ways to work:
+* the old Mondongo's way,
+* the new Mondongo's Query and methods,
+* and DoctrineMongo, another great ODM you probably know.</p>
+
+<p>The first thing we need to do is accessing the repositories. This is also shorter.</p>
+
+<div class="highlight"><pre><span class="c1">// old</span>
+<span class="nv">$repository</span> <span class="o">=</span> <span class="nv">$mondongo</span><span class="o">-&gt;</span><span class="na">getRepitory</span><span class="p">(</span><span class="s1">&#39;Model\Article&#39;</span><span class="p">);</span>
+
+<span class="c1">// new</span>
+<span class="nv">$repository</span> <span class="o">=</span> <span class="nx">\Model\Article</span><span class="o">::</span><span class="na">repository</span><span class="p">();</span>
+
+<span class="c1">// DoctrineMongo</span>
+<span class="nv">$repository</span> <span class="o">=</span> <span class="nv">$documentManager</span><span class="o">-&gt;</span><span class="na">getRepository</span><span class="p">(</span><span class="s1">&#39;Model\Article&#39;</span><span class="p">);</span>
+</pre></div>
+
+
+<p>Then we can play with the new Query.</p>
+
+<div class="highlight"><pre><span class="nv">$query</span> <span class="o">=</span> <span class="nx">\Model\Article</span><span class="o">::</span><span class="na">repository</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">query</span><span class="p">();</span>
+<span class="nv">$query</span> <span class="o">=</span> <span class="nx">\Model\Article</span><span class="o">::</span><span class="na">repository</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">query</span><span class="p">(</span><span class="nv">$criteria</span><span class="p">);</span>
+
+<span class="nv">$query</span> <span class="o">=</span> <span class="nx">\Model\Article</span><span class="o">::</span><span class="na">query</span><span class="p">();</span>
+<span class="nv">$query</span> <span class="o">=</span> <span class="nx">\Model\Article</span><span class="o">::</span><span class="na">query</span><span class="p">(</span><span class="nv">$criteria</span><span class="p">);</span>
+
+<span class="c1">// methods (fluent interface)</span>
+<span class="nv">$query</span>
+    <span class="o">-&gt;</span><span class="na">criteria</span><span class="p">(</span><span class="nv">$criteria</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">fields</span><span class="p">(</span><span class="nv">$fields</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">sort</span><span class="p">(</span><span class="nv">$sort</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">limit</span><span class="p">(</span><span class="nv">$limit</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">skip</span><span class="p">(</span><span class="nv">$skip</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">batchSize</span><span class="p">(</span><span class="nv">$batchSize</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">hint</span><span class="p">(</span><span class="nv">$hint</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">immortal</span><span class="p">(</span><span class="nv">$immortal</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">snapshot</span><span class="p">(</span><span class="nv">$snapshot</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">timeout</span><span class="p">(</span><span class="nv">$timeout</span><span class="p">)</span>
+<span class="p">;</span>
+
+<span class="c1">// query is only executed here</span>
+<span class="k">foreach</span> <span class="p">(</span><span class="nv">$query</span> <span class="k">as</span> <span class="nv">$result</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// iterating</span>
+<span class="p">}</span>
+<span class="nv">$articles</span> <span class="o">=</span> <span class="nv">$query</span><span class="o">-&gt;</span><span class="na">all</span><span class="p">();</span>
+<span class="nv">$article</span> <span class="o">=</span> <span class="nv">$query</span><span class="o">-&gt;</span><span class="na">one</span><span class="p">();</span>
+
+<span class="c1">// and the count method executes the count efficient method</span>
+<span class="nv">$nb</span> <span class="o">=</span> <span class="nv">$query</span><span class="o">-&gt;</span><span class="na">count</span><span class="p">();</span>
+</pre></div>
+
+
+<p>Like you have seen, the query only executes the real database's query when you iterate or when you
+ explicitly call methods like <em>all()</em>, <em>one()</em>, <em>find()</em> or <em>count()</em>. That means that you can customize the query
+as you want.</p>
+
+<div class="highlight"><pre><span class="nv">$query</span> <span class="o">=</span> <span class="nx">\Model\Article</span><span class="o">::</span><span class="na">query</span><span class="p">();</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$criteria</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$query</span><span class="o">-&gt;</span><span class="na">criteria</span><span class="p">(</span><span class="nv">$criteria</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$sort</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$query</span><span class="o">-&gt;</span><span class="na">sort</span><span class="p">(</span><span class="nv">$sort</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// you can apply the logic you want...</span>
+</pre></div>
+
+
+<p>Let's see some more examples.</p>
+
+<p>All results.</p>
+
+<div class="highlight"><pre><span class="c1">// old</span>
+<span class="nv">$articles</span> <span class="o">=</span> <span class="nv">$mondongo</span><span class="o">-&gt;</span><span class="na">getRepository</span><span class="p">(</span><span class="s1">&#39;Model\Article&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">find</span><span class="p">();</span>
+
+<span class="c1">// new</span>
+<span class="nv">$articles</span> <span class="o">=</span> <span class="nx">\Model\Article</span><span class="o">::</span><span class="na">query</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">all</span><span class="p">();</span>
+
+<span class="c1">// DoctrineMongo</span>
+<span class="nv">$articles</span> <span class="o">=</span> <span class="nv">$documentManager</span><span class="o">-&gt;</span><span class="na">getRepository</span><span class="p">(</span><span class="s1">&#39;Model\Article&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">findAll</span><span class="p">();</span>
+</pre></div>
+
+
+<p>One result.</p>
+
+<div class="highlight"><pre><span class="c1">// old</span>
+<span class="nv">$article</span> <span class="o">=</span> <span class="nv">$mondongo</span><span class="o">-&gt;</span><span class="na">getRepository</span><span class="p">(</span><span class="s1">&#39;Model\Article&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">findOne</span><span class="p">();</span>
+
+<span class="c1">// new</span>
+<span class="nv">$article</span> <span class="o">=</span> <span class="nx">\Model\Article</span><span class="o">::</span><span class="na">query</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">one</span><span class="p">();</span>
+
+<span class="c1">// DoctrineMongo</span>
+<span class="nv">$article</span> <span class="o">=</span> <span class="nv">$documentManager</span><span class="o">-&gt;</span><span class="na">getRepository</span><span class="p">(</span><span class="s1">&#39;Model\Article&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">findOneBy</span><span class="p">(</span><span class="k">array</span><span class="p">());</span>
+</pre></div>
+
+
+<p>Simple conditions.</p>
+
+<div class="highlight"><pre><span class="c1">// old</span>
+<span class="nv">$articles</span> <span class="o">=</span> <span class="nv">$mondongo</span><span class="o">-&gt;</span><span class="na">getRepository</span><span class="p">(</span><span class="s1">&#39;Model\Article&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">find</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">&#39;is_active&#39;</span> <span class="o">=&gt;</span> <span class="k">true</span><span class="p">));</span>
+
+<span class="c1">// new</span>
+<span class="nv">$articles</span> <span class="o">=</span> <span class="nx">\Model\Article</span><span class="o">::</span><span class="na">query</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">&#39;is_active&#39;</span> <span class="o">=&gt;</span> <span class="k">true</span><span class="p">));</span>
+
+<span class="c1">// DoctrineMongo</span>
+<span class="nv">$articles</span> <span class="o">=</span> <span class="nv">$documentManager</span><span class="o">-&gt;</span><span class="na">getRepository</span><span class="p">(</span><span class="s1">&#39;Model\Article&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">findBy</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">&#39;is_active&#39;</span> <span class="o">=&gt;</span> <span class="k">true</span><span class="p">));</span>
+</pre></div>
+
+
+<p>Playing a little bit.</p>
+
+<div class="highlight"><pre><span class="c1">// old</span>
+<span class="nv">$articles</span> <span class="o">=</span> <span class="nv">$mondongo</span><span class="o">-&gt;</span><span class="na">getRepository</span><span class="p">(</span><span class="s1">&#39;Model\Article&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">find</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">&#39;is_active&#39;</span> <span class="o">=&gt;</span> <span class="k">true</span><span class="p">),</span> <span class="k">array</span><span class="p">(</span>
+    <span class="s1">&#39;sort&#39;</span>  <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;date&#39;</span> <span class="o">=&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span>
+    <span class="s1">&#39;limit&#39;</span> <span class="o">=&gt;</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="s1">&#39;skip&#39;</span>  <span class="o">=&gt;</span> <span class="mi">5</span><span class="p">,</span>
+<span class="p">));</span>
+
+<span class="c1">// new</span>
+<span class="nv">$articles</span> <span class="o">=</span> <span class="nx">\Model\Article</span><span class="o">::</span><span class="na">query</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">&#39;is_active&#39;</span> <span class="o">=&gt;</span> <span class="k">true</span><span class="p">))</span><span class="o">-&gt;</span><span class="na">sort</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">&#39;date&#39;</span> <span class="o">=&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">-&gt;</span><span class="na">limit</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">skip</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+
+<span class="c1">// DoctrineMongo</span>
+<span class="nv">$articles</span> <span class="o">=</span> <span class="nv">$documentManager</span><span class="o">-&gt;</span><span class="na">query</span><span class="p">(</span><span class="s1">&#39;find all from Model\Article where is_active = ? limit 10 skip 5 sort date desc&#39;</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="k">true</span><span class="p">));</span>
+</pre></div>
+
+
+<p>And the famous find method.</p>
+
+<div class="highlight"><pre><span class="c1">// old</span>
+<span class="nv">$article</span> <span class="o">=</span> <span class="nv">$mondongo</span><span class="o">-&gt;</span><span class="na">getRepository</span><span class="p">(</span><span class="s1">&#39;Model\Article&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">findOneById</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
+
+<span class="c1">// new</span>
+<span class="nv">$article</span> <span class="o">=</span> <span class="nx">\Model\Article</span><span class="o">::</span><span class="na">repository</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">find</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
+<span class="nv">$article</span> <span class="o">=</span> <span class="nx">\Model\Article</span><span class="o">::</span><span class="na">find</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
+
+<span class="c1">// DoctrineMongo</span>
+<span class="nv">$article</span> <span class="o">=</span> <span class="nv">$documentManager</span><span class="o">-&gt;</span><span class="na">getRepository</span><span class="p">(</span><span class="s1">&#39;Model\Article&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">find</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
+</pre></div>
+
+
+<p>And now we can even use the <em>find()</em> method with an array of ids.</p>
+
+<div class="highlight"><pre><span class="nv">$article</span> <span class="o">=</span> <span class="nx">\Model\Article</span><span class="o">::</span><span class="na">find</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
+<span class="nv">$articles</span> <span class="o">=</span> <span class="nx">\Model\Article</span><span class="o">::</span><span class="na">find</span><span class="p">(</span><span class="nv">$ids</span><span class="p">);</span>
+</pre></div>
+
+
+<h3> Too many static methods!</h3>
+
+<p>Well, probably most of you are thinking we are using static methods, and that is not good. And it's true,
+static methods <em>usually</em> are not good, but if you take a look at how these static methods are implemented you
+will see that they are only here to access the repository methods (???).</p>
+
+<div class="highlight"><pre><span class="nv">$repository</span> <span class="o">=</span> <span class="nv">$mondongo</span><span class="o">-&gt;</span><span class="na">getRepository</span><span class="p">(</span><span class="s1">&#39;Model\Article&#39;</span><span class="p">);</span>
+<span class="nv">$repository</span> <span class="o">=</span> <span class="nx">\Model\Article</span><span class="o">::</span><span class="na">repository</span><span class="p">();</span>
+
+<span class="nv">$query</span> <span class="o">=</span> <span class="nv">$mondongo</span><span class="o">-&gt;</span><span class="na">getRepository</span><span class="p">(</span><span class="s1">&#39;Model\Article&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">query</span><span class="p">();</span>
+<span class="nv">$query</span> <span class="o">=</span> <span class="nx">\Model\Article</span><span class="o">::</span><span class="na">query</span><span class="p">();</span>
+
+<span class="nv">$article</span> <span class="o">=</span> <span class="nv">$mondongo</span><span class="o">-&gt;</span><span class="na">getRepository</span><span class="p">(</span><span class="s1">&#39;Model\Article&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">find</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
+<span class="nv">$article</span> <span class="o">=</span> <span class="nx">\Model\Article</span><span class="o">::</span><span class="na">find</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
+</pre></div>
+
+
+<p>This means you can choose your prefered solution! Ff you don't like static methods you can type all the code if you like,
+but if you want a rapid development, you will probably like the shorter methods ;)</p>
+
+<h3> In Symfony2</h3>
+
+<p>If you use <a href="http://symfony-reloaded.org/">Symfony2</a> like most of the people that use Mondongo or DoctrineMongo,
+take a look at the difference in a controller.</p>
+
+<div class="highlight"><pre><span class="c1">// old</span>
+<span class="nv">$article</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;mondongo&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">getRepository</span><span class="p">(</span><span class="s1">&#39;Model\Article&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">findOneById</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
+
+<span class="c1">// new</span>
+<span class="nv">$article</span> <span class="o">=</span> <span class="nx">\Model\Article</span><span class="o">::</span><span class="na">find</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
+
+<span class="c1">// DoctrineMongo</span>
+<span class="nv">$article</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;doctrine.odm.mongodb.document_manager&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">getRepository</span><span class="p">(</span><span class="s1">&#39;Model\Article&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
+</pre></div>
+
+
+        </div>
+    </div>
+
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'mandango'; // required: replace example with your forum shortname
+
+        // The following are highly recommended additional parameters. Remove the slashes in front to use.
+         var disqus_identifier = 'blog/2011/02/21/say-hello-to-the-new-mondongo-query.html';
+         var disqus_url = 'http:/mandango.org/blog/2011/02/21/say-hello-to-the-new-mondongo-query.html';
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="ft">
+            <div class="ft_content">
+                <ul class="ft_menu">
+                    <li class="item">
+                        <h2>Mandango</h2>
+                        <ul>
+                            <li class="first">
+                                <a href="/">Home</a>
+                            </li>
+                            <li>
+                                <a href="/performance.html">Performance</a>
+                            </li>
+                            <li>
+                                <a href="/installation.html">Installation</a>
+                            </li>
+                            <li>
+                                <a href="/documentation.html">Documentation</a>
+                            </li>
+                            <li>
+                                <a href="/development.html">Development</a>
+                            </li>
+                            <li>
+                                <a href="/blog/">Blog</a>
+                            </li>
+                            <li>
+                                <a href="/about.html">About</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="item">
+                        <h2>Powered by</h2>
+                        <ul>
+                            <li class="first">
+                               <a href="http://www.php.net">PHP</a>
+                            </li>
+                            <li>
+                                <a href="http://www.mongodb.org">MongoDB</a>
+                            </li>
+                            <li>
+                                <a href="http://www.symfony.com">Symfony</a>
+                            </li>
+                            <li>
+                                <a href="http://git-scm.com">Git</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="feed">
+                    <a href="/blog/feed.xml">
+                        <img src="/images/feed.png" />
+                    </a>
+                </div>
+            </div>
+        </div>
+        <a href="http://github.com/mandango"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/images/forkme_right_red_aa0000.png" alt="Fork me on GitHub" /></a>
+        <script type="text/javascript">
+
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-23040635-1']);
+          _gaq.push(['_trackPageview']);
+
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+
+        </script>
+            </body>
+</html>

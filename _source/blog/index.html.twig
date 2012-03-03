@@ -1,0 +1,39 @@
+{% extends 'views/layout.html.twig' %}
+
+{% block title %}Blog - Mandango{% endblock %}
+{% block menu_current_tab %}blog{% endblock %}
+
+{% block content %}
+    <h2>Blog</h2>
+
+    {% for post in dynamic('blog') %}
+        <div class="blog_post">
+            <div class="blog_post_title">
+                <h2>
+                    <a href="{{ path(post.path) }}">{{ post.title }}</a>
+                </h2>
+            </div>
+            <div class="blog_post_info clearfix">
+                <span>Author: <strong>{{ post.author }}</strong></span>
+                <span>Date: {{ post.date|date('F j, Y') }}</span>
+                <a href="{{ path(post.path) }}#disqus_thread" data-disqus-identifier="blog_post:{{ post.path }}">comments</a>
+            </div>
+            <br />
+        </div>
+    {% endfor %}
+{% endblock %}
+
+{% block disqus %}
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'mandango'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function () {
+            var s = document.createElement('script'); s.async = true;
+            s.type = 'text/javascript';
+            s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+    </script>
+{% endblock %}
