@@ -18,11 +18,13 @@
             {{ data.content|raw }}
         </div>
     </div>
+{% endblock %}
 
+{% block content_bottom %}
     <div id="disqus_thread"></div>
     <script type="text/javascript">
         /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-        var disqus_shortname = 'Manango'; // required: replace example with your forum shortname
+        var disqus_shortname = 'mandango'; // required: replace example with your forum shortname
 
         var disqus_identifier = '{{ path(data.path) }}';
         var disqus_url = '{{ url(data.path) }}';
