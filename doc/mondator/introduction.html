@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <title>Introduction - Documentation - Mandango</title>
+        <link rel="stylesheet" href="/css/yui.css">
+        <link rel="stylesheet" href="/css/mandango.css">
+        <link rel="stylesheet" href="/css/pygments.css">
+    </head>
+    <body class="yui-skin-sam">
+        <div class="wrapper">
+            <div id="doc4">
+                <div id="hd">
+                    <div id="mainHeader" class="clearfix">
+                        <h1 class="mainTitle">
+                            <a href="/"><img src="/images/logo.png" alt="Mandango" /></a>
+                        </h1>
+                        <div class="slogan">The easy, powerful and ultrafast ODM for PHP and MongoDB.</div>
+                        <ul id="mainNav" class="clearfix">
+                                                        
+    <li><span><a href="/">Home</a></span></li>
+    <li><span><a href="/performance.html">Performance</a></span></li>
+    <li><span><a href="/installation.html">Installation</a></span></li>
+    <li><span class="current"><a href="/doc/">Documentation</a></span></li>
+    <li><span><a href="/development.html">Development</a></span></li>
+    <li><span><a href="/blog/">Blog</a></span></li>
+    <li><span><a href="/about.html">About</a></span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="bd">
+                    <div class="mainContent">
+                            <div class="related">
+        <ul>
+                            <li class="right"><a href="/doc/mondator/usage.html">Usage</a></li>
+                                        <li><a href="/doc/mandango-bundle/security.html">Security</a></li>
+                    </ul>
+    </div>
+
+    <h1>Introduction</h1>
+
+    <p>Mondator is an easy and flexible class generator for PHP.</p>
+
+<h2>Requirements</h2>
+
+<p>Mondator requires PHP 5.3.0 o upper.</p>
+
+<h2>Instalation</h2>
+
+<p>You can install Mondator directly, from git, svn.</p>
+
+<h3>Directly</h3>
+
+<p>You can download directly from <a href="http://github.com/mandango/mondator/tarball/master">tar</a>
+or <a href="http://github.com/mandango/mondator/zipball/master">zip</a>.</p>
+
+<h3>Git</h3>
+
+<p>http://github.com/mandango/mondator</p>
+
+<h3>Subversion</h3>
+
+<p>There is an access through Subversion to the Git repository.</p>
+
+<p>http://svn.github.com/mandango/mondator</p>
+
+<h2>Classes loader</h2>
+
+<p>To use Mondator you just have to add it namespace to a class loader:</p>
+
+<div class="highlight"><pre><span class="k">use</span> <span class="nx">Symfony\Component\HttpFoundation\UniversalClassLoader</span><span class="p">;</span>
+
+<span class="nv">$loader</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">UniversalClassLoader</span><span class="p">();</span>
+<span class="nv">$loader</span><span class="o">-&gt;</span><span class="na">registerNamespaces</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
+    <span class="s1">&#39;Mandango\Mondator&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;/path/to/mondator/src&#39;</span><span class="p">,</span>
+<span class="p">));</span>
+<span class="nv">$loader</span><span class="o">-&gt;</span><span class="na">register</span><span class="p">();</span>
+</pre></div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="ft">
+            <div class="ft_content">
+                <ul class="ft_menu">
+                    <li class="item">
+                        <h2>Mandango</h2>
+                        <ul>
+                            <li class="first">
+                                <a href="/">Home</a>
+                            </li>
+                            <li>
+                                <a href="/performance.html">Performance</a>
+                            </li>
+                            <li>
+                                <a href="/installation.html">Installation</a>
+                            </li>
+                            <li>
+                                <a href="/doc/">Documentation</a>
+                            </li>
+                            <li>
+                                <a href="/development.html">Development</a>
+                            </li>
+                            <li>
+                                <a href="/blog/">Blog</a>
+                            </li>
+                            <li>
+                                <a href="/about.html">About</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="item">
+                        <h2>Powered by</h2>
+                        <ul>
+                            <li class="first">
+                               <a href="http://www.php.net">PHP</a>
+                            </li>
+                            <li>
+                                <a href="http://www.mongodb.org">MongoDB</a>
+                            </li>
+                            <li>
+                                <a href="http://www.symfony.com">Symfony</a>
+                            </li>
+                            <li>
+                                <a href="http://git-scm.com">Git</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="feed">
+                    <a href="/blog/feed.xml">
+                        <img src="/images/feed.png" />
+                    </a>
+                </div>
+            </div>
+        </div>
+        <a href="http://github.com/mandango"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/images/forkme_right_red_aa0000.png" alt="Fork me on GitHub" /></a>
+        <script type="text/javascript">
+
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-23040635-1']);
+          _gaq.push(['_trackPageview']);
+
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+
+        </script>
+            </body>
+</html>

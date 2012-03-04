@@ -337,7 +337,7 @@ html, body {
   border-right: none;
   margin: 1em 0;
   min-height: 32px;
-  padding: .3em .5em .7em;
+  padding: .3em .5em .7em 3.5em;
 }
 
 .mandango_blockquote_content
@@ -382,4 +382,65 @@ html, body {
 .mandango_blockquote p
 {
   margin: .5em 0;
+}
+
+/*
+ * Doc
+ */
+div.related {
+    width: 100%;
+    font-size: 90%;
+}
+
+div.related h3 {
+    display: none;
+}
+
+div.related ul {
+    margin: 0;
+    padding: 0 0 0 10px;
+    list-style: none;
+}
+
+div.related li {
+    display: inline;
+}
+
+div.related li.right {
+    float: right;
+    margin-right: 5px;
+}
+
+div.related {
+    font-size: 1em;
+}
+
+div.related ul {
+    /*background-image: url(navigation.png);*/
+    height: 2em;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+}
+
+div.related ul li {
+    margin: 0;
+    padding: 0;
+    height: 2em;
+    float: left;
+}
+
+div.related ul li.right {
+    float: right;
+    margin-right: 5px;
+}
+
+div.related ul li a {
+    margin: 0;
+    padding: 0 5px 0 5px;
+    line-height: 1.75em;
+    color: #EE9816;
+}
+
+div.related ul li a:hover {
+    color: #3CA8E7;
 }

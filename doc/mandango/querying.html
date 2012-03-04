@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <title>Querying - Documentation - Mandango</title>
+        <link rel="stylesheet" href="/css/yui.css">
+        <link rel="stylesheet" href="/css/mandango.css">
+        <link rel="stylesheet" href="/css/pygments.css">
+    </head>
+    <body class="yui-skin-sam">
+        <div class="wrapper">
+            <div id="doc4">
+                <div id="hd">
+                    <div id="mainHeader" class="clearfix">
+                        <h1 class="mainTitle">
+                            <a href="/"><img src="/images/logo.png" alt="Mandango" /></a>
+                        </h1>
+                        <div class="slogan">The easy, powerful and ultrafast ODM for PHP and MongoDB.</div>
+                        <ul id="mainNav" class="clearfix">
+                                                        
+    <li><span><a href="/">Home</a></span></li>
+    <li><span><a href="/performance.html">Performance</a></span></li>
+    <li><span><a href="/installation.html">Installation</a></span></li>
+    <li><span class="current"><a href="/doc/">Documentation</a></span></li>
+    <li><span><a href="/development.html">Development</a></span></li>
+    <li><span><a href="/blog/">Blog</a></span></li>
+    <li><span><a href="/about.html">About</a></span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="bd">
+                    <div class="mainContent">
+                            <div class="related">
+        <ul>
+                            <li class="right"><a href="/doc/mandango/unit-of-work.html">Unit Of Work</a></li>
+                                        <li><a href="/doc/mandango/repositories.html">Repositories</a></li>
+                    </ul>
+    </div>
+
+    <h1>Querying</h1>
+
+    <p>The queries are made in Mandango through the document query classes,
+which inherit from the <code>Mandango\Query</code> class, which is awesome.</p>
+
+<p>The philosophy is simple: be as fast (lazy) and easy (human friendly) as
+possible, and the results are incredible.</p>
+
+<p>The <code>Mandango\Query</code> class uses the mongo query syntax, so you don't have to learn
+a new language to start to use it, although you can of course add much more
+cool stuff on the top of it.</p>
+
+<p>Let's see how it works:</p>
+
+<div class="highlight"><pre><span class="nv">$query</span> <span class="o">=</span> <span class="nv">$articleRepository</span><span class="o">-&gt;</span><span class="na">createQuery</span><span class="p">();</span> <span class="c1">// Model\ArticleQuery</span>
+<span class="nv">$query</span> <span class="o">=</span> <span class="nv">$articleRepository</span><span class="o">-&gt;</span><span class="na">createQuery</span><span class="p">(</span><span class="nv">$criteria</span><span class="p">);</span>
+
+<span class="c1">// methods (fluent interface)</span>
+<span class="nv">$query</span>
+    <span class="o">-&gt;</span><span class="na">criteria</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">&#39;is_active&#39;</span> <span class="o">=&gt;</span> <span class="k">true</span><span class="p">))</span>
+    <span class="o">-&gt;</span><span class="na">fields</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">&#39;title&#39;</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="o">-&gt;</span><span class="na">sort</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">&#39;date&#39;</span> <span class="o">=&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+    <span class="o">-&gt;</span><span class="na">limit</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">skip</span><span class="p">(</span><span class="mi">25</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">batchSize</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">hint</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">&#39;date&#39;</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="o">-&gt;</span><span class="na">slaveOkay</span><span class="p">(</span><span class="k">true</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">snapshot</span><span class="p">(</span><span class="k">true</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">timeout</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+
+    <span class="o">-&gt;</span><span class="na">references</span><span class="p">()</span> <span class="c1">// Mandango&#39;s extra</span>
+<span class="p">;</span>
+
+<span class="c1">// the real query is only executed in these cases</span>
+<span class="k">foreach</span> <span class="p">(</span><span class="nv">$query</span> <span class="k">as</span> <span class="nv">$result</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// iterating (IteratorAggregate interface)</span>
+<span class="p">}</span>
+<span class="nv">$articles</span> <span class="o">=</span> <span class="nv">$query</span><span class="o">-&gt;</span><span class="na">all</span><span class="p">();</span> <span class="c1">// retrieving all results explicitly</span>
+<span class="nv">$article</span> <span class="o">=</span> <span class="nv">$query</span><span class="o">-&gt;</span><span class="na">one</span><span class="p">();</span> <span class="c1">// retrieving one result  explicitly</span>
+
+<span class="c1">// counting results (directly, without hydrate)</span>
+<span class="nv">$nb</span> <span class="o">=</span> <span class="nv">$query</span><span class="o">-&gt;</span><span class="na">count</span><span class="p">();</span>
+<span class="nv">$nb</span> <span class="o">=</span> <span class="nb">count</span><span class="p">(</span><span class="nv">$query</span><span class="p">);</span> <span class="c1">// Countable interface</span>
+</pre></div>
+
+
+<h2>References</h2>
+
+<p>MongoDB does not have joins, but Mandango has the best and most efficient way
+to solve this feature. Usually when you access to a reference, the reference is
+queried, so if you have to access to several references, you have to make
+several queries. What does Mandango do? Simply to group the references queries
+in only one query:</p>
+
+<div class="highlight"><pre><span class="c1">// queries articles</span>
+<span class="nv">$articles</span> <span class="o">=</span> <span class="nv">$articleRepository</span><span class="o">-&gt;</span><span class="na">createQuery</span><span class="p">()</span>
+    <span class="o">-&gt;</span><span class="na">all</span><span class="p">()</span>
+<span class="p">;</span>
+<span class="k">foreach</span> <span class="p">(</span><span class="nv">$articles</span> <span class="k">as</span> <span class="nv">$article</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// query each author, so the number of queries depends on the different authors</span>
+    <span class="nv">$article</span><span class="o">-&gt;</span><span class="na">getAuthor</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="c1">// queries articles and their authors</span>
+<span class="c1">// only two queries, no matter how many authors there are</span>
+<span class="c1">// authors queried with array(&#39;_id&#39; =&gt; &#39;$in&#39; =&gt; $authorIds)</span>
+<span class="nv">$articles</span> <span class="o">=</span> <span class="nv">$articleRepository</span><span class="o">-&gt;</span><span class="na">createQuery</span><span class="p">()</span>
+    <span class="o">-&gt;</span><span class="na">references</span><span class="p">(</span><span class="s1">&#39;author&#39;</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">all</span><span class="p">()</span>
+<span class="p">;</span>
+<span class="k">foreach</span> <span class="p">(</span><span class="nv">$articles</span> <span class="k">as</span> <span class="nv">$article</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$article</span><span class="o">-&gt;</span><span class="na">getAuthor</span><span class="p">();</span> <span class="c1">// queried!</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h2>Applying logic</h2>
+
+<p>Like you have seen, the queries only execute the real database's queries when
+you iterate or when you do it explicitly. That means that you can play with the
+queries before they really query something:</p>
+
+<div class="highlight"><pre><span class="nv">$query</span> <span class="o">=</span> <span class="nv">$articleRepository</span><span class="o">-&gt;</span><span class="na">createQuery</span><span class="p">();</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$criteria</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$query</span><span class="o">-&gt;</span><span class="na">criteria</span><span class="p">(</span><span class="nv">$criteria</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$sort</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$query</span><span class="o">-&gt;</span><span class="na">sort</span><span class="p">(</span><span class="nv">$sort</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// you can apply the logic that you want before to query...</span>
+</pre></div>
+
+
+<h2>Merging criteria</h2>
+
+<p>When we apply logic depending on parameters, sometimes we want just modify part
+of the criteria. You can use the <code>-&gt;mergeCriteria()</code> method for this:</p>
+
+<div class="highlight"><pre><span class="c1">// normal</span>
+<span class="nv">$query</span><span class="o">-&gt;</span><span class="na">criteria</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">&#39;author&#39;</span> <span class="o">=&gt;</span> <span class="nv">$author</span><span class="o">-&gt;</span><span class="na">getId</span><span class="p">));</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$active</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$query</span><span class="o">-&gt;</span><span class="na">criteria</span><span class="p">(</span><span class="nb">array_merge</span><span class="p">(</span><span class="nv">$query</span><span class="o">-&gt;</span><span class="na">getCriteria</span><span class="p">(),</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;is_active&#39;</span> <span class="o">=&gt;</span> <span class="k">true</span><span class="p">)));</span>
+<span class="p">}</span>
+
+<span class="c1">// merging</span>
+<span class="nv">$query</span><span class="o">-&gt;</span><span class="na">criteria</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">&#39;author&#39;</span> <span class="o">=&gt;</span> <span class="nv">$author</span><span class="o">-&gt;</span><span class="na">getId</span><span class="p">));</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$active</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$query</span><span class="o">-&gt;</span><span class="na">mergeCriteria</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">&#39;is_active&#39;</span> <span class="o">=&gt;</span> <span class="k">true</span><span class="p">));</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h2>Reusing logic</h2>
+
+<p>A query class is generated for each document class, so you can save logic on it:</p>
+
+<div class="highlight"><pre><span class="c1">// Model\ArticleQuery</span>
+<span class="k">public</span> <span class="k">function</span> <span class="nf">active</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">mergeCriteria</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">&#39;is_active&#39;</span> <span class="o">=&gt;</span> <span class="k">true</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="c1">// using</span>
+<span class="nv">$query</span><span class="o">-&gt;</span><span class="na">criteria</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">&#39;author&#39;</span> <span class="o">=&gt;</span> <span class="nv">$author</span><span class="o">-&gt;</span><span class="na">getId</span><span class="p">));</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$active</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$query</span><span class="o">-&gt;</span><span class="na">active</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h2>References many</h2>
+
+<p>Please, remember how :doc:<code>references many work &lt;/mandango/working-with-objects&gt;</code>.</p>
+
+<p>The <code>Mandango\\ReferenceGroup</code> class has a <code>createQuery</code> method that just returns a
+query object to query the referenced documents. So, as the mandango query class
+is awesome, you can also make awesome stuff with it:</p>
+
+<div class="highlight"><pre><span class="c1">// query and returns all categories</span>
+<span class="nv">$categories</span> <span class="o">=</span> <span class="nv">$article</span><span class="o">-&gt;</span><span class="na">getCategories</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">all</span><span class="p">();</span>
+<span class="c1">// just returns a query object to query the referenced categories:</span>
+<span class="c1">//     array(&#39;_id&#39; =&gt; array(&#39;$in&#39; =&gt; $categoryIds))</span>
+<span class="nv">$categories</span> <span class="o">=</span> <span class="nv">$article</span><span class="o">-&gt;</span><span class="na">getCategories</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">createQuery</span><span class="p">();</span>
+
+<span class="c1">// using the query, applying any logic</span>
+<span class="nv">$categories</span><span class="o">-&gt;</span><span class="na">mergeCriteria</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="k">new</span> <span class="nx">\MongoRegex</span><span class="p">(</span><span class="s1">&#39;/^A/&#39;</span><span class="p">)));</span>
+<span class="nv">$categories</span><span class="o">-&gt;</span><span class="na">sort</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">));</span>
+<span class="nv">$categories</span><span class="o">-&gt;</span><span class="na">limit</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">skip</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+<span class="nv">$nbCategories</span> <span class="o">=</span> <span class="nv">$categories</span><span class="o">-&gt;</span><span class="na">count</span><span class="p">();</span>
+</pre></div>
+
+
+<h2>Relations</h2>
+
+<p>The relations many just return a query object, so you can use it in the same way:</p>
+
+<div class="highlight"><pre><span class="nv">$articles</span> <span class="o">=</span> <span class="nv">$author</span><span class="o">-&gt;</span><span class="na">getCategories</span><span class="p">();</span>
+<span class="nv">$articles</span><span class="o">-&gt;</span><span class="na">mergeCriteria</span><span class="p">(</span><span class="nv">$criteria</span><span class="p">);</span>
+<span class="nv">$nbArticles</span> <span class="o">=</span> <span class="nv">$articles</span><span class="o">-&gt;</span><span class="na">count</span><span class="p">();</span>
+</pre></div>
+
+
+<h2>Collection</h2>
+
+<p>You can also use the mongo collection directly to do the customized operations
+you need:</p>
+
+<div class="highlight"><pre><span class="nv">$collection</span> <span class="o">=</span> <span class="nv">$articleRepository</span><span class="o">-&gt;</span><span class="na">getCollection</span><span class="p">();</span>
+</pre></div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="ft">
+            <div class="ft_content">
+                <ul class="ft_menu">
+                    <li class="item">
+                        <h2>Mandango</h2>
+                        <ul>
+                            <li class="first">
+                                <a href="/">Home</a>
+                            </li>
+                            <li>
+                                <a href="/performance.html">Performance</a>
+                            </li>
+                            <li>
+                                <a href="/installation.html">Installation</a>
+                            </li>
+                            <li>
+                                <a href="/doc/">Documentation</a>
+                            </li>
+                            <li>
+                                <a href="/development.html">Development</a>
+                            </li>
+                            <li>
+                                <a href="/blog/">Blog</a>
+                            </li>
+                            <li>
+                                <a href="/about.html">About</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="item">
+                        <h2>Powered by</h2>
+                        <ul>
+                            <li class="first">
+                               <a href="http://www.php.net">PHP</a>
+                            </li>
+                            <li>
+                                <a href="http://www.mongodb.org">MongoDB</a>
+                            </li>
+                            <li>
+                                <a href="http://www.symfony.com">Symfony</a>
+                            </li>
+                            <li>
+                                <a href="http://git-scm.com">Git</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="feed">
+                    <a href="/blog/feed.xml">
+                        <img src="/images/feed.png" />
+                    </a>
+                </div>
+            </div>
+        </div>
+        <a href="http://github.com/mandango"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/images/forkme_right_red_aa0000.png" alt="Fork me on GitHub" /></a>
+        <script type="text/javascript">
+
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-23040635-1']);
+          _gaq.push(['_trackPageview']);
+
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+
+        </script>
+            </body>
+</html>

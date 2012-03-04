@@ -20,6 +20,7 @@ skribo:
     parsers:
         full_markdown:
             - dragonfly_markdown
+            - {parser: markdown_blockquote_type, options: {class_layout: "mandango_blockquote mandango_blockquote_%%class%%"}}
             - markdown_code_pygments
 
 dynamic:
@@ -28,10 +29,17 @@ dynamic:
             source_path: blog
             extensions: [md]
             order:
-                field:     date
+                field: date
                 direction: desc
             defaults:
                 parser: full_markdown
                 layout: views/blog_post.html.twig
                 author: pablodip
                 permalink: %%date%%/%%file_name%%
+
+        doc:
+            source_path: doc
+            extensions: [md]
+            defaults:
+                parser: full_markdown
+                layout: views/doc_chapter.html.twig

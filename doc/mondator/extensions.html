@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <title>Extensions - Documentation - Mandango</title>
+        <link rel="stylesheet" href="/css/yui.css">
+        <link rel="stylesheet" href="/css/mandango.css">
+        <link rel="stylesheet" href="/css/pygments.css">
+    </head>
+    <body class="yui-skin-sam">
+        <div class="wrapper">
+            <div id="doc4">
+                <div id="hd">
+                    <div id="mainHeader" class="clearfix">
+                        <h1 class="mainTitle">
+                            <a href="/"><img src="/images/logo.png" alt="Mandango" /></a>
+                        </h1>
+                        <div class="slogan">The easy, powerful and ultrafast ODM for PHP and MongoDB.</div>
+                        <ul id="mainNav" class="clearfix">
+                                                        
+    <li><span><a href="/">Home</a></span></li>
+    <li><span><a href="/performance.html">Performance</a></span></li>
+    <li><span><a href="/installation.html">Installation</a></span></li>
+    <li><span class="current"><a href="/doc/">Documentation</a></span></li>
+    <li><span><a href="/development.html">Development</a></span></li>
+    <li><span><a href="/blog/">Blog</a></span></li>
+    <li><span><a href="/about.html">About</a></span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="bd">
+                    <div class="mainContent">
+                            <div class="related">
+        <ul>
+                                        <li><a href="/doc/mondator/outputs.html">Outputs</a></li>
+                    </ul>
+    </div>
+
+    <h1>Extensions</h1>
+
+    <p>The extensions are the ones in charge of indicating, from the config classes,
+which classes will be generated, how they will be, and where they will be.
+This is done through the definition and outputs, as we have seen before.</p>
+
+<h2>Definitions with Outputs</h2>
+
+<p>Each definition must be an output. For this it is used the
+<em>Mandango\Mondator\Definition</em> class instead:</p>
+
+<div class="highlight"><pre><span class="k">use</span> <span class="nx">Mandango\Mondator\Definition</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Mandango\Mondator\Output</span><span class="p">;</span>
+
+<span class="nv">$output</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Output</span><span class="p">(</span><span class="nv">$modeldir</span><span class="p">);</span>
+<span class="nv">$definition</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Definition</span><span class="p">(</span><span class="nv">$class</span><span class="p">,</span> <span class="nv">$output</span><span class="p">);</span>
+
+<span class="c1">// use the definition in the same way that a regular definition</span>
+<span class="c1">// ...</span>
+</pre></div>
+
+
+<h2>Creating Extensions</h2>
+
+<p>The extensions are classes that inherit from <em>Mandango\Mondator\Extension</em> and
+implement the protected <em>->doClassProcess()</em> method.</p>
+
+<p>The <em>->doClassProcess()</em> method is the place where the config classes
+are processed and are created or modified definitions and/or outputs. The
+processing of the config classes is made one by one.</p>
+
+<p><strong>Variables of the classes meanwhile process</strong>:</p>
+
+<ul>
+<li><strong>$this->class</strong>: class name</li>
+<li><strong>$this->configClass</strong>: class data</li>
+<li><strong>$this->definitions</strong>: the definitions container</li>
+</ul>
+
+<p>The extensions also accept options to be able to customize its behavior.
+The options are added in the protected <em>->setup()</em> method, and can be required
+or optional.</p>
+
+<p><strong>Methods for adding options</strong>:</p>
+
+<ul>
+<li><strong>$this->addRequiredOption($name)</strong>: adds a required option</li>
+<li><strong>$this->addOption($name, $defaultValue)</strong>: adds an optional option</li>
+<li><strong>$this->addRequiredOptions($options)</strong>: add several required options (name as value)</li>
+<li><strong>$this->addOptions($options)</strong>: adds several optional options (name as key and value by default as value)</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>We are going to do an example that creates definitions of <em>document</em> and
+<strong>document_base</strong>, one inherited from the other, and adds to the base class properties,
+setters and getters of the fields that have class configurations:</p>
+
+<div class="highlight"><pre><span class="k">namespace</span> <span class="nx">MyProject\Extension</span><span class="p">;</span>
+
+<span class="k">use</span> <span class="nx">Mandango\Mondator\Definition</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Mandango\Mondator\Definition\Property</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Mandango\Mondator\Definition\Method</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Mandango\Mondator\Extension</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Mandango\Mondator\Output</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Mandango\Inflector</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">DocumentExtension</span> <span class="k">extends</span> <span class="nx">Extension</span>
+<span class="p">{</span>
+    <span class="k">protected</span> <span class="k">function</span> <span class="nf">setup</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">addRequiredOption</span><span class="p">(</span><span class="s1">&#39;output&#39;</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">addOption</span><span class="p">(</span><span class="s1">&#39;process_fields&#39;</span><span class="p">,</span> <span class="k">true</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">protected</span> <span class="k">function</span> <span class="nf">doProcess</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="c1">// document</span>
+        <span class="nv">$output</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Output</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">getOption</span><span class="p">(</span><span class="s1">&#39;output&#39;</span><span class="p">));</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">definitions</span><span class="p">[</span><span class="s1">&#39;document&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Definition</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">class</span><span class="p">,</span> <span class="nv">$output</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">definitions</span><span class="p">[</span><span class="s1">&#39;document&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">setParentClass</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">class</span><span class="o">.</span><span class="s1">&#39;Base&#39;</span><span class="p">);</span>
+
+        <span class="c1">// document_base</span>
+        <span class="nv">$output</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Output</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">getOption</span><span class="p">(</span><span class="s1">&#39;output&#39;</span><span class="p">)</span><span class="o">.</span><span class="s1">&#39;/Base&#39;</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">definitions</span><span class="p">[</span><span class="s1">&#39;document_base&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Definition</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">class</span><span class="o">.</span><span class="s1">&#39;Base&#39;</span><span class="p">,</span> <span class="nv">$output</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">definitions</span><span class="p">[</span><span class="s1">&#39;document_base&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">setIsAbstract</span><span class="p">(</span><span class="k">true</span><span class="p">);</span>
+
+        <span class="c1">// fields</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">getOption</span><span class="p">(</span><span class="s1">&#39;process_fields&#39;</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">configClass</span><span class="p">[</span><span class="s1">&#39;fields&#39;</span><span class="p">]))</span> <span class="p">{</span>
+                <span class="k">foreach</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">configClass</span><span class="p">[</span><span class="s1">&#39;fields&#39;</span><span class="p">]</span> <span class="k">as</span> <span class="nv">$name</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="c1">// property</span>
+                    <span class="nv">$property</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Property</span><span class="p">(</span><span class="s1">&#39;protected&#39;</span><span class="p">,</span> <span class="nv">$name</span><span class="p">,</span> <span class="k">null</span><span class="p">);</span>
+                    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">container</span><span class="p">[</span><span class="s1">&#39;document_base&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">addProperty</span><span class="p">(</span><span class="nv">$property</span><span class="p">);</span>
+
+                    <span class="c1">// setter</span>
+                    <span class="nv">$method</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Method</span><span class="p">(</span><span class="s1">&#39;public&#39;</span><span class="p">,</span> <span class="s1">&#39;set&#39;</span><span class="o">.</span><span class="nx">Inflector</span><span class="o">::</span><span class="na">camelize</span><span class="p">(</span><span class="nv">$name</span><span class="p">),</span> <span class="s1">&#39;$value&#39;</span><span class="p">,</span> <span class="s">&lt;&lt;&lt;EOF</span>
+<span class="s">        \$this-&gt;$name = \$value;</span>
+<span class="s">EOF</span>
+                    <span class="p">);</span>
+                    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">container</span><span class="p">[</span><span class="s1">&#39;document_base&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">addMethod</span><span class="p">(</span><span class="nv">$method</span><span class="p">);</span>
+
+                    <span class="c1">// getter</span>
+                    <span class="nv">$method</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Method</span><span class="p">(</span><span class="s1">&#39;public&#39;</span><span class="p">,</span> <span class="s1">&#39;get&#39;</span><span class="o">.</span><span class="nx">Inflector</span><span class="o">::</span><span class="na">camelize</span><span class="p">(</span><span class="nv">$name</span><span class="p">),</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s">&lt;&lt;&lt;EOF</span>
+<span class="s">        return \$this-&gt;$name;</span>
+<span class="s">EOF</span>
+                    <span class="p">);</span>
+                    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">container</span><span class="p">[</span><span class="s1">&#39;document_base&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">addMethod</span><span class="p">(</span><span class="nv">$method</span><span class="p">);</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="ft">
+            <div class="ft_content">
+                <ul class="ft_menu">
+                    <li class="item">
+                        <h2>Mandango</h2>
+                        <ul>
+                            <li class="first">
+                                <a href="/">Home</a>
+                            </li>
+                            <li>
+                                <a href="/performance.html">Performance</a>
+                            </li>
+                            <li>
+                                <a href="/installation.html">Installation</a>
+                            </li>
+                            <li>
+                                <a href="/doc/">Documentation</a>
+                            </li>
+                            <li>
+                                <a href="/development.html">Development</a>
+                            </li>
+                            <li>
+                                <a href="/blog/">Blog</a>
+                            </li>
+                            <li>
+                                <a href="/about.html">About</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="item">
+                        <h2>Powered by</h2>
+                        <ul>
+                            <li class="first">
+                               <a href="http://www.php.net">PHP</a>
+                            </li>
+                            <li>
+                                <a href="http://www.mongodb.org">MongoDB</a>
+                            </li>
+                            <li>
+                                <a href="http://www.symfony.com">Symfony</a>
+                            </li>
+                            <li>
+                                <a href="http://git-scm.com">Git</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="feed">
+                    <a href="/blog/feed.xml">
+                        <img src="/images/feed.png" />
+                    </a>
+                </div>
+            </div>
+        </div>
+        <a href="http://github.com/mandango"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/images/forkme_right_red_aa0000.png" alt="Fork me on GitHub" /></a>
+        <script type="text/javascript">
+
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-23040635-1']);
+          _gaq.push(['_trackPageview']);
+
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+
+        </script>
+            </body>
+</html>

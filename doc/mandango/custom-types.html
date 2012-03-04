@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <title>Custom types - Documentation - Mandango</title>
+        <link rel="stylesheet" href="/css/yui.css">
+        <link rel="stylesheet" href="/css/mandango.css">
+        <link rel="stylesheet" href="/css/pygments.css">
+    </head>
+    <body class="yui-skin-sam">
+        <div class="wrapper">
+            <div id="doc4">
+                <div id="hd">
+                    <div id="mainHeader" class="clearfix">
+                        <h1 class="mainTitle">
+                            <a href="/"><img src="/images/logo.png" alt="Mandango" /></a>
+                        </h1>
+                        <div class="slogan">The easy, powerful and ultrafast ODM for PHP and MongoDB.</div>
+                        <ul id="mainNav" class="clearfix">
+                                                        
+    <li><span><a href="/">Home</a></span></li>
+    <li><span><a href="/performance.html">Performance</a></span></li>
+    <li><span><a href="/installation.html">Installation</a></span></li>
+    <li><span class="current"><a href="/doc/">Documentation</a></span></li>
+    <li><span><a href="/development.html">Development</a></span></li>
+    <li><span><a href="/blog/">Blog</a></span></li>
+    <li><span><a href="/about.html">About</a></span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="bd">
+                    <div class="mainContent">
+                            <div class="related">
+        <ul>
+                            <li class="right"><a href="/doc/mandango/query-cache.html">Query Cache</a></li>
+                                        <li><a href="/doc/mandango/behaviors.html">Behaviors</a></li>
+                    </ul>
+    </div>
+
+    <h1>Custom types</h1>
+
+    <p>You can use custom types to accomplish the mapping of documents.</p>
+
+<p>To do that you have to create a mandango type and add it to the mandango types' container.</p>
+
+<h2>Creating custom types</h2>
+
+<p>A mandango type is a class that inherits from <code>Mandango\Type\Type</code> and
+implements its four abstract methods.</p>
+
+<p>Let's see an example:</p>
+
+<div class="highlight"><pre><span class="k">namespace</span> <span class="nx">MyProject\Type</span><span class="p">;</span>
+
+<span class="k">use</span> <span class="nx">Mandango\Type\Type</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">MyType</span> <span class="k">extends</span> <span class="nx">Type</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">toMongo</span><span class="p">(</span><span class="nv">$value</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="p">(</span><span class="nx">string</span><span class="p">)</span> <span class="nv">$value</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">toPHP</span><span class="p">(</span><span class="nv">$value</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="p">(</span><span class="nx">string</span><span class="p">)</span> <span class="nv">$value</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">toMongoInString</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="s1">&#39;%to% = (string) %from%;&#39;</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">toPHPInString</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="s1">&#39;%to% = (string) %from%;&#39;</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h3>Four abstract methods</h3>
+
+<ul>
+<li><code>toMongo</code>: convert a PHP value to Mongo</li>
+<li><code>toPHP</code>: convert a Mongo value to PHP</li>
+<li><code>toMongoInString</code>: convert a PHP value to Mongo in string (to generate the classes)</li>
+<li><code>toPHPInString</code>: convert a Mongo value to PHP in string (to generate the classes)</li>
+</ul>
+
+<h2>Mandango types' container</h2>
+
+<p>Once you have the type you just have to add it to the mandango types' container,
+in order to be able to use it:</p>
+
+php
+use Mandango\Type\Container;
+
+Container::addType('my_type', 'MyProject\Type\MyType');
+
+<blockquote class="mandango_blockquote mandango_blockquote_note"><p>
+  It is only necessary to do this when the classes are generated, not when they
+  are going to be used.</p></blockquote>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="ft">
+            <div class="ft_content">
+                <ul class="ft_menu">
+                    <li class="item">
+                        <h2>Mandango</h2>
+                        <ul>
+                            <li class="first">
+                                <a href="/">Home</a>
+                            </li>
+                            <li>
+                                <a href="/performance.html">Performance</a>
+                            </li>
+                            <li>
+                                <a href="/installation.html">Installation</a>
+                            </li>
+                            <li>
+                                <a href="/doc/">Documentation</a>
+                            </li>
+                            <li>
+                                <a href="/development.html">Development</a>
+                            </li>
+                            <li>
+                                <a href="/blog/">Blog</a>
+                            </li>
+                            <li>
+                                <a href="/about.html">About</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="item">
+                        <h2>Powered by</h2>
+                        <ul>
+                            <li class="first">
+                               <a href="http://www.php.net">PHP</a>
+                            </li>
+                            <li>
+                                <a href="http://www.mongodb.org">MongoDB</a>
+                            </li>
+                            <li>
+                                <a href="http://www.symfony.com">Symfony</a>
+                            </li>
+                            <li>
+                                <a href="http://git-scm.com">Git</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="feed">
+                    <a href="/blog/feed.xml">
+                        <img src="/images/feed.png" />
+                    </a>
+                </div>
+            </div>
+        </div>
+        <a href="http://github.com/mandango"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/images/forkme_right_red_aa0000.png" alt="Fork me on GitHub" /></a>
+        <script type="text/javascript">
+
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-23040635-1']);
+          _gaq.push(['_trackPageview']);
+
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+
+        </script>
+            </body>
+</html>

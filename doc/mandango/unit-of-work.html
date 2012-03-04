@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <title>Unit Of Work - Documentation - Mandango</title>
+        <link rel="stylesheet" href="/css/yui.css">
+        <link rel="stylesheet" href="/css/mandango.css">
+        <link rel="stylesheet" href="/css/pygments.css">
+    </head>
+    <body class="yui-skin-sam">
+        <div class="wrapper">
+            <div id="doc4">
+                <div id="hd">
+                    <div id="mainHeader" class="clearfix">
+                        <h1 class="mainTitle">
+                            <a href="/"><img src="/images/logo.png" alt="Mandango" /></a>
+                        </h1>
+                        <div class="slogan">The easy, powerful and ultrafast ODM for PHP and MongoDB.</div>
+                        <ul id="mainNav" class="clearfix">
+                                                        
+    <li><span><a href="/">Home</a></span></li>
+    <li><span><a href="/performance.html">Performance</a></span></li>
+    <li><span><a href="/installation.html">Installation</a></span></li>
+    <li><span class="current"><a href="/doc/">Documentation</a></span></li>
+    <li><span><a href="/development.html">Development</a></span></li>
+    <li><span><a href="/blog/">Blog</a></span></li>
+    <li><span><a href="/about.html">About</a></span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="bd">
+                    <div class="mainContent">
+                            <div class="related">
+        <ul>
+                            <li class="right"><a href="/doc/mandango/indexes.html">Indexes</a></li>
+                                        <li><a href="/doc/mandango/querying.html">Querying</a></li>
+                    </ul>
+    </div>
+
+    <h1>Unit Of Work</h1>
+
+    <p>Mandango implements the <a href="http://martinfowler.com/eaaCatalog/unitOfWork.html">Unit Of Work</a>
+pattern, which simply means "send all database operation at once".</p>
+
+<p>Let's see an example:</p>
+
+<div class="highlight"><pre><span class="c1">// prepare database operations</span>
+<span class="nv">$author</span> <span class="o">=</span> <span class="nv">$mandango</span><span class="o">-&gt;</span><span class="na">create</span><span class="p">(</span><span class="s1">&#39;Model\Author&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">setName</span><span class="p">(</span><span class="s1">&#39;pablodip&#39;</span><span class="p">);</span>
+<span class="nv">$mandango</span><span class="o">-&gt;</span><span class="na">persist</span><span class="p">(</span><span class="nv">$author</span><span class="p">);</span>
+
+<span class="nv">$category1</span> <span class="o">=</span> <span class="nv">$mandango</span><span class="o">-&gt;</span><span class="na">create</span><span class="p">(</span><span class="s1">&#39;Model\Category&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">setName</span><span class="p">(</span><span class="s1">&#39;MongoDB&#39;</span><span class="p">);</span>
+<span class="nv">$category2</span> <span class="o">=</span> <span class="nv">$mandango</span><span class="o">-&gt;</span><span class="na">create</span><span class="p">(</span><span class="s1">&#39;Model\Category&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">setName</span><span class="p">(</span><span class="s1">&#39;PHP&#39;</span><span class="p">);</span>
+<span class="nv">$mandango</span><span class="o">-&gt;</span><span class="na">persist</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="nv">$category1</span><span class="p">,</span> <span class="nv">$category2</span><span class="p">));</span>
+
+<span class="nv">$article</span> <span class="o">=</span> <span class="nv">$articleRepository</span><span class="o">-&gt;</span><span class="na">createQuery</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Mondongo&#39;</span><span class="p">))</span><span class="o">-&gt;</span><span class="na">one</span><span class="p">();</span>
+<span class="nv">$article</span>
+    <span class="o">-&gt;</span><span class="na">setName</span><span class="p">(</span><span class="s1">&#39;Mandango&#39;</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">setAuthor</span><span class="p">(</span><span class="nv">$author</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">addCategories</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="nv">$category1</span><span class="p">,</span> <span class="nv">$category2</span><span class="p">))</span>
+<span class="p">;</span>
+<span class="nv">$mandango</span><span class="o">-&gt;</span><span class="na">persist</span><span class="p">(</span><span class="nv">$article</span><span class="p">);</span>
+
+<span class="nv">$articles</span> <span class="o">=</span> <span class="nv">$articleRepository</span><span class="o">-&gt;</span><span class="na">createQuery</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">&#39;type&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;foo&#39;</span><span class="p">))</span><span class="o">-&gt;</span><span class="na">all</span><span class="p">();</span>
+<span class="nv">$mandango</span><span class="o">-&gt;</span><span class="na">remove</span><span class="p">(</span><span class="nv">$articles</span><span class="p">);</span>
+
+<span class="c1">// send all database operations at once</span>
+<span class="nv">$mandango</span><span class="o">-&gt;</span><span class="na">flush</span><span class="p">();</span>
+</pre></div>
+
+
+<p>Like you can see this is a really powerful way to work, because you can
+prepare all the database operations, and when all of them are ready, you
+just have to send them to the database.</p>
+
+<p>MongoDB does not have transactions, so this is probably the best way you
+can work if you want avoid as much as possible database inconsistency
+because of application breaks.</p>
+
+<p>And this is also the best way to get the maximum database performance, because
+Mandango does that the database operations are as efficient as possible.</p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="ft">
+            <div class="ft_content">
+                <ul class="ft_menu">
+                    <li class="item">
+                        <h2>Mandango</h2>
+                        <ul>
+                            <li class="first">
+                                <a href="/">Home</a>
+                            </li>
+                            <li>
+                                <a href="/performance.html">Performance</a>
+                            </li>
+                            <li>
+                                <a href="/installation.html">Installation</a>
+                            </li>
+                            <li>
+                                <a href="/doc/">Documentation</a>
+                            </li>
+                            <li>
+                                <a href="/development.html">Development</a>
+                            </li>
+                            <li>
+                                <a href="/blog/">Blog</a>
+                            </li>
+                            <li>
+                                <a href="/about.html">About</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="item">
+                        <h2>Powered by</h2>
+                        <ul>
+                            <li class="first">
+                               <a href="http://www.php.net">PHP</a>
+                            </li>
+                            <li>
+                                <a href="http://www.mongodb.org">MongoDB</a>
+                            </li>
+                            <li>
+                                <a href="http://www.symfony.com">Symfony</a>
+                            </li>
+                            <li>
+                                <a href="http://git-scm.com">Git</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="feed">
+                    <a href="/blog/feed.xml">
+                        <img src="/images/feed.png" />
+                    </a>
+                </div>
+            </div>
+        </div>
+        <a href="http://github.com/mandango"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/images/forkme_right_red_aa0000.png" alt="Fork me on GitHub" /></a>
+        <script type="text/javascript">
+
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-23040635-1']);
+          _gaq.push(['_trackPageview']);
+
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+
+        </script>
+            </body>
+</html>

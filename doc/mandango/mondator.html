@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <title>Mondator - Documentation - Mandango</title>
+        <link rel="stylesheet" href="/css/yui.css">
+        <link rel="stylesheet" href="/css/mandango.css">
+        <link rel="stylesheet" href="/css/pygments.css">
+    </head>
+    <body class="yui-skin-sam">
+        <div class="wrapper">
+            <div id="doc4">
+                <div id="hd">
+                    <div id="mainHeader" class="clearfix">
+                        <h1 class="mainTitle">
+                            <a href="/"><img src="/images/logo.png" alt="Mandango" /></a>
+                        </h1>
+                        <div class="slogan">The easy, powerful and ultrafast ODM for PHP and MongoDB.</div>
+                        <ul id="mainNav" class="clearfix">
+                                                        
+    <li><span><a href="/">Home</a></span></li>
+    <li><span><a href="/performance.html">Performance</a></span></li>
+    <li><span><a href="/installation.html">Installation</a></span></li>
+    <li><span class="current"><a href="/doc/">Documentation</a></span></li>
+    <li><span><a href="/development.html">Development</a></span></li>
+    <li><span><a href="/blog/">Blog</a></span></li>
+    <li><span><a href="/about.html">About</a></span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="bd">
+                    <div class="mainContent">
+                            <div class="related">
+        <ul>
+                            <li class="right"><a href="/doc/mandango/basic-mapping.html">Basic Mapping</a></li>
+                                        <li><a href="/doc/mandango/configuration.html">Configuration</a></li>
+                    </ul>
+    </div>
+
+    <h1>Mondator</h1>
+
+    <p>Mondator is an easy and flexible class generator for PHP.</p>
+
+<h2>Philosophy</h2>
+
+<p>Mondator uses <code>config classes</code> and <code>extensions</code> to generate the
+classes. The config classes have the information about the classes,
+and the extensions process those data and indicate which classes have to be
+generated, where and how they must be.</p>
+
+<p>Mondator is extremely flexible, because the classes that are generated from the
+config classes depend on the extensions that you have assigned them.</p>
+
+<p>Mandango uses an extension of Mondator to generate the classes of documents,
+repositories and queries.</p>
+
+<h2>A simple example</h2>
+
+<p>We are going to do a simple example with Mondator using Mandango, this way
+you will see step by step what you will have to do to use it and you will
+understand how it works.</p>
+
+<h3>Create a Mondator</h3>
+
+<div class="highlight"><pre><span class="k">use</span> <span class="nx">Mandango\Mondator\Mondator</span><span class="p">;</span>
+
+<span class="nv">$mondator</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Mondator</span><span class="p">();</span>
+</pre></div>
+
+
+<h3>Assign the Config Classes</h3>
+
+<p>The config classes contain the information of the classes:</p>
+
+<div class="highlight"><pre><span class="nv">$mondator</span><span class="o">-&gt;</span><span class="na">setConfigClasses</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
+    <span class="s1">&#39;Model\Article&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s1">&#39;fields&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+            <span class="s1">&#39;title&#39;</span>   <span class="o">=&gt;</span> <span class="s1">&#39;string&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;content&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;string&#39;</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">),</span>
+<span class="p">));</span>
+</pre></div>
+
+
+<p>.. tip::
+  You can use a language like <a href="http://www.yaml.org">YAML</a> to work with the
+  config classes easily.</p>
+
+<h3>Assign the extensions</h3>
+
+<p>The extensions are the ones ordered to process the config classes and
+generate class definitions and outputs. The definitions indicate which
+classes will be generated, and the outputs where they will be generated.</p>
+
+<p>The order in which the extensions are assigned is the order in which they are
+processed, so it is very important that it is the right order.</p>
+
+<p>The extensions also accept options to be able to customize its operation:</p>
+
+<div class="highlight"><pre><span class="nv">$mondator</span><span class="o">-&gt;</span><span class="na">setExtensions</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
+    <span class="k">new</span> <span class="nx">Mandango\Extension\Core</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
+        <span class="s1">&#39;metadata_factory_class&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Model\Mapping\MetadataFactory&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;metadta_factory_output&#39;</span> <span class="o">=&gt;</span> <span class="nv">$modelDir</span><span class="o">.</span><span class="s1">&#39;/Mapping&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;default_output&#39;</span>         <span class="o">=&gt;</span> <span class="nv">$modelDir</span><span class="p">,</span>
+    <span class="p">)),</span>
+<span class="p">));</span>
+</pre></div>
+
+
+<blockquote class="mandango_blockquote mandango_blockquote_note"><p>
+  Adding more extensions you will be able to customize the generated classes
+  as much as you want, or even generate more classes.</p></blockquote>
+
+<h3>Process the Mondator</h3>
+
+<p>Once you have assigned the config classes and extensions, you only have to
+process the mondator to generate the files of the classes:</p>
+
+<div class="highlight"><pre><span class="nv">$mondator</span><span class="o">-&gt;</span><span class="na">process</span><span class="p">();</span>
+</pre></div>
+
+
+<h2>A full example</h2>
+
+<p>Let's see a full example, which you can use to start using Mandango:</p>
+
+<div class="highlight"><pre><span class="nv">$mandangoDir</span> <span class="o">=</span> <span class="s1">&#39;/path/to/mandango&#39;</span><span class="p">;</span>
+<span class="nv">$modelDir</span>  <span class="o">=</span> <span class="s1">&#39;/path/to/Model&#39;</span><span class="p">;</span>
+
+<span class="c1">// classes loader</span>
+<span class="k">require_once</span><span class="p">(</span><span class="nv">$mandangoDir</span><span class="o">.</span><span class="s1">&#39;/vendor/symfony/src/Symony/Component/ClassLoader/UniversalClassLoader.php&#39;</span><span class="p">);</span>
+
+<span class="k">use</span> <span class="nx">Symfony\Component\ClassLoader\UniversalClassLoader</span><span class="p">;</span>
+
+<span class="nv">$loader</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">UniversalClassLoader</span><span class="p">();</span>
+<span class="nv">$loader</span><span class="o">-&gt;</span><span class="na">registerNamespaces</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
+    <span class="s1">&#39;Mandango\Mondator&#39;</span> <span class="o">=&gt;</span> <span class="nv">$mandangoDir</span><span class="o">.</span><span class="s1">&#39;/vendor/mondator/src&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Mandango&#39;</span>          <span class="o">=&gt;</span> <span class="nv">$mandangoDir</span><span class="o">.</span><span class="s1">&#39;/src/&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Model&#39;</span>             <span class="o">=&gt;</span> <span class="nb">dirname</span><span class="p">(</span><span class="nv">$modelDir</span><span class="p">),</span>
+<span class="p">));</span>
+<span class="nv">$loader</span><span class="o">-&gt;</span><span class="na">register</span><span class="p">();</span>
+
+<span class="c1">// start Mondator</span>
+<span class="k">use</span> <span class="nx">Mandango\Mondator\Mondator</span><span class="p">;</span>
+
+<span class="nv">$mondator</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Mondator</span><span class="p">();</span>
+
+<span class="c1">// assign the config classes</span>
+<span class="nv">$mondator</span><span class="o">-&gt;</span><span class="na">setConfigClasses</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
+    <span class="s1">&#39;Model\Article&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s1">&#39;fields&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+            <span class="s1">&#39;title&#39;</span>   <span class="o">=&gt;</span> <span class="s1">&#39;string&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;content&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;string&#39;</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">),</span>
+<span class="p">));</span>
+
+<span class="c1">// assign extensions</span>
+<span class="nv">$mondator</span><span class="o">-&gt;</span><span class="na">setExtensions</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
+    <span class="k">new</span> <span class="nx">Mandango\Extension\Core</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
+        <span class="s1">&#39;metadata_factory_class&#39;</span>  <span class="o">=&gt;</span> <span class="s1">&#39;Model\Mapping\MetadataFactory&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;metadata_factory_output&#39;</span> <span class="o">=&gt;</span> <span class="nv">$modelDir</span><span class="o">.</span><span class="s1">&#39;/Mapping&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;default_output&#39;</span>          <span class="o">=&gt;</span> <span class="nv">$modelDir</span><span class="p">,</span>
+    <span class="p">)),</span>
+<span class="p">));</span>
+
+<span class="c1">// process</span>
+<span class="nv">$mondator</span><span class="o">-&gt;</span><span class="na">process</span><span class="p">();</span>
+</pre></div>
+
+
+<p>If you take a look at the generated files, you will see that there are empty
+classes that you can customize, and others <em>Base</em> that <strong>you must not modify</strong>
+because they are <strong>overwritten</strong> every time the mondator is processed.</p>
+
+<blockquote class="mandango_blockquote mandango_blockquote_note"><p>
+   If you want to know more about Mondator you can browse its documentation.</p></blockquote>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="ft">
+            <div class="ft_content">
+                <ul class="ft_menu">
+                    <li class="item">
+                        <h2>Mandango</h2>
+                        <ul>
+                            <li class="first">
+                                <a href="/">Home</a>
+                            </li>
+                            <li>
+                                <a href="/performance.html">Performance</a>
+                            </li>
+                            <li>
+                                <a href="/installation.html">Installation</a>
+                            </li>
+                            <li>
+                                <a href="/doc/">Documentation</a>
+                            </li>
+                            <li>
+                                <a href="/development.html">Development</a>
+                            </li>
+                            <li>
+                                <a href="/blog/">Blog</a>
+                            </li>
+                            <li>
+                                <a href="/about.html">About</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="item">
+                        <h2>Powered by</h2>
+                        <ul>
+                            <li class="first">
+                               <a href="http://www.php.net">PHP</a>
+                            </li>
+                            <li>
+                                <a href="http://www.mongodb.org">MongoDB</a>
+                            </li>
+                            <li>
+                                <a href="http://www.symfony.com">Symfony</a>
+                            </li>
+                            <li>
+                                <a href="http://git-scm.com">Git</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="feed">
+                    <a href="/blog/feed.xml">
+                        <img src="/images/feed.png" />
+                    </a>
+                </div>
+            </div>
+        </div>
+        <a href="http://github.com/mandango"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/images/forkme_right_red_aa0000.png" alt="Fork me on GitHub" /></a>
+        <script type="text/javascript">
+
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-23040635-1']);
+          _gaq.push(['_trackPageview']);
+
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+
+        </script>
+            </body>
+</html>

@@ -1,0 +1,21 @@
+{% extends 'views/layout.html.twig' %}
+
+{% block title %}{{ data.title }} - Documentation - Mandango{% endblock %}
+{% block menu_current_tab %}documentation{% endblock %}
+
+{% block content %}
+    <div class="related">
+        <ul>
+            {% if data._next %}
+                <li class="right"><a href="{{ path(data._next.path) }}">{{ data._next.title }}</a></li>
+            {% endif %}
+            {% if data._previous %}
+                <li><a href="{{ path(data._previous.path) }}">{{ data._previous.title }}</a></li>
+            {% endif %}
+        </ul>
+    </div>
+
+    <h1>{{ data.title }}</h1>
+
+    {{ data.content|raw }}
+{% endblock %}

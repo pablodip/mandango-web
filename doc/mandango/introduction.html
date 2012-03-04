@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <title>Introduction - Documentation - Mandango</title>
+        <link rel="stylesheet" href="/css/yui.css">
+        <link rel="stylesheet" href="/css/mandango.css">
+        <link rel="stylesheet" href="/css/pygments.css">
+    </head>
+    <body class="yui-skin-sam">
+        <div class="wrapper">
+            <div id="doc4">
+                <div id="hd">
+                    <div id="mainHeader" class="clearfix">
+                        <h1 class="mainTitle">
+                            <a href="/"><img src="/images/logo.png" alt="Mandango" /></a>
+                        </h1>
+                        <div class="slogan">The easy, powerful and ultrafast ODM for PHP and MongoDB.</div>
+                        <ul id="mainNav" class="clearfix">
+                                                        
+    <li><span><a href="/">Home</a></span></li>
+    <li><span><a href="/performance.html">Performance</a></span></li>
+    <li><span><a href="/installation.html">Installation</a></span></li>
+    <li><span class="current"><a href="/doc/">Documentation</a></span></li>
+    <li><span><a href="/development.html">Development</a></span></li>
+    <li><span><a href="/blog/">Blog</a></span></li>
+    <li><span><a href="/about.html">About</a></span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="bd">
+                    <div class="mainContent">
+                            <div class="related">
+        <ul>
+                            <li class="right"><a href="/doc/mandango/configuration.html">Configuration</a></li>
+                                </ul>
+    </div>
+
+    <h1>Introduction</h1>
+
+    <p>Mandango is an easy, poweful and ultrafast <em>Object Document Mapper</em> (ODM) for
+PHP and MongoDB.</p>
+
+<h2>¿What is MongoDB?</h2>
+
+<p>MongoDB (<em>Mongo</em>) is a scalable, high-performance, open source,
+document-oriented database.</p>
+
+<p>Mongo (and the <a href="http://en.wikipedia.org/wiki/NoSQL">NOSQL</a> movement in general)
+answer to the <strong>needs for performance</strong> of databases, that each time more applications
+(especially web) have, due to the high number of reads, writes and the high
+amount of information to store.</p>
+
+<blockquote class="mandango_blockquote mandango_blockquote_note"><p>
+  If you want to know more about MongoDB, you can visit its web:
+  <a href="http://www.mongodb.org">http://www.mongodb.org</a>.</p></blockquote>
+
+<h2>¿What is an ODM?</h2>
+
+<p>An ODM is a tool that maps the structure of the databases in objects
+(PHP in this case). This way you can work in your documents from the database
+with PHP objects, with all the great advantages that it carries.</p>
+
+<p>An ODM also abstracts usual operations with the documents, and provides with
+utilities that can simplify a lot common tasks.</p>
+
+<p>An ODM also has a disadvantage: the performance. This is due to using
+objects and abstracting operations.</p>
+
+<h2>¿Why an ODM with MongoDB?</h2>
+
+<p>Apparently the Mongo philosophy doesn't agree with the philosophy of ODM,
+because on one hand Mongo speeds the database and on the other hand the ODM
+slow down the applications. It's true, but we don't have to forget of the
+rapid application development.</p>
+
+<p>The <em>Rapid Application Development</em> <strong>RAD</strong> is very important in order that
+your applications are running as soon as it is possible, because it isn't
+worthwhile to spend a lot of time finishing a superfast application if when it
+is going to be in production it can't compete or it's unmaintainable.</p>
+
+<h2>¿Why Mandango?</h2>
+
+<p>Mandango is to the ODMs what Mongo is to databases.</p>
+
+<ul>
+<li><strong>Simple</strong>: Mandango is developed in a simple way. This makes it very easy to learn, use, and avoid bugs.</li>
+<li><strong>Powerful</strong>: Mandango is very flexible thanks to Mondator, so you'll be able to use it to develop any type of application.</li>
+<li><strong>Ultrafast</strong>: Mandango has been designed to be extremely light in memory consumption and processing cost.</li>
+</ul>
+
+<p>¿Aren't you convinced yet? Let me show you a few more features:</p>
+
+<ul>
+<li><strong>References and Embeds</strong>: Mandango allows you to work with <a href="http://www.mongodb.org/display/DOCS/Schema+Design#SchemaDesign-Embedvs.Reference">references and embeds</a> very easily.</li>
+<li><strong>Extensions</strong>: Mandango can be customized infinitely with Mondator Extensions.</li>
+<li><strong>Indexes</strong>: Mandango allows you to work easily with the <a href="http://www.mongodb.org/display/DOCS/Indexes">indexes</a> of the collections.</li>
+<li><strong>Events</strong>: Mandango throws <em>hooks</em> before and after inserting, updating, saving and deleting documents.</li>
+<li><strong>GridFS</strong>: Mandango allows to save files of any size using <a href="http://www.mongodb.org/display/DOCS/GridFS">GridFS</a>.</li>
+<li><strong>Log</strong>: Mandango allows to save logs of the queries to improve the development.</li>
+<li><strong>batchInsert</strong>: Mandango uses <a href="http://www.php.net/manual/en/mongocollection.batchinsert.php">batchInsert</a> to insert documents in an efficient way.</li>
+<li><strong>Atomic Operations</strong>: Mandango uses <a href="http://www.mongodb.org/display/DOCS/Atomic+Operations">atomic operations</a> to update and delete documents efficiently.</li>
+<li><strong>Integratión with IDEs</strong>: Mandango uses generated code, so you may integrate it with your IDE.</li>
+<li><strong>Tested</strong>: Mandango is completely tested with automated test with <a href="http://www.phpunit.de">PHPUnit</a>.</li>
+</ul>
+
+<blockquote class="mandango_blockquote mandango_blockquote_note"><p>
+  Mandango is <strong>the fastest mapper</strong> in PHP by far.
+  More information in the <a href="http://mandango.org/performance">performance comparison</a>.</p></blockquote>
+
+<h2>Requirements</h2>
+
+<h3>From your computer</h3>
+
+<p>Mandango requires PHP 5.3.0 or greater, and of course MongoDB and the PHP
+driver for MongoDB (1.0.11 or greater).</p>
+
+<h3>From you</h3>
+
+<p>Mandango uses <a href="http://www.php.net/manual/en/language.oop5.php">object oriented PHP</a> and <a href="http://www.mongodb.org/display/DOCS/Tutorial">Mongo</a>, so if you want to start using it
+you should know both things minimally at least.</p>
+
+<h3> Installation</h3>
+
+<p>You can install Mandango downloading it directly, by git, svn.</p>
+
+<p>More information in the <a href="http://mandango.org/installation">Mandango installation page</a>.</p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="ft">
+            <div class="ft_content">
+                <ul class="ft_menu">
+                    <li class="item">
+                        <h2>Mandango</h2>
+                        <ul>
+                            <li class="first">
+                                <a href="/">Home</a>
+                            </li>
+                            <li>
+                                <a href="/performance.html">Performance</a>
+                            </li>
+                            <li>
+                                <a href="/installation.html">Installation</a>
+                            </li>
+                            <li>
+                                <a href="/doc/">Documentation</a>
+                            </li>
+                            <li>
+                                <a href="/development.html">Development</a>
+                            </li>
+                            <li>
+                                <a href="/blog/">Blog</a>
+                            </li>
+                            <li>
+                                <a href="/about.html">About</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="item">
+                        <h2>Powered by</h2>
+                        <ul>
+                            <li class="first">
+                               <a href="http://www.php.net">PHP</a>
+                            </li>
+                            <li>
+                                <a href="http://www.mongodb.org">MongoDB</a>
+                            </li>
+                            <li>
+                                <a href="http://www.symfony.com">Symfony</a>
+                            </li>
+                            <li>
+                                <a href="http://git-scm.com">Git</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="feed">
+                    <a href="/blog/feed.xml">
+                        <img src="/images/feed.png" />
+                    </a>
+                </div>
+            </div>
+        </div>
+        <a href="http://github.com/mandango"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/images/forkme_right_red_aa0000.png" alt="Fork me on GitHub" /></a>
+        <script type="text/javascript">
+
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-23040635-1']);
+          _gaq.push(['_trackPageview']);
+
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+
+        </script>
+            </body>
+</html>

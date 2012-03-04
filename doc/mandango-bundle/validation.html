@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <title>Validation - Documentation - Mandango</title>
+        <link rel="stylesheet" href="/css/yui.css">
+        <link rel="stylesheet" href="/css/mandango.css">
+        <link rel="stylesheet" href="/css/pygments.css">
+    </head>
+    <body class="yui-skin-sam">
+        <div class="wrapper">
+            <div id="doc4">
+                <div id="hd">
+                    <div id="mainHeader" class="clearfix">
+                        <h1 class="mainTitle">
+                            <a href="/"><img src="/images/logo.png" alt="Mandango" /></a>
+                        </h1>
+                        <div class="slogan">The easy, powerful and ultrafast ODM for PHP and MongoDB.</div>
+                        <ul id="mainNav" class="clearfix">
+                                                        
+    <li><span><a href="/">Home</a></span></li>
+    <li><span><a href="/performance.html">Performance</a></span></li>
+    <li><span><a href="/installation.html">Installation</a></span></li>
+    <li><span class="current"><a href="/doc/">Documentation</a></span></li>
+    <li><span><a href="/development.html">Development</a></span></li>
+    <li><span><a href="/blog/">Blog</a></span></li>
+    <li><span><a href="/about.html">About</a></span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="bd">
+                    <div class="mainContent">
+                            <div class="related">
+        <ul>
+                            <li class="right"><a href="/doc/mandango-bundle/forms.html">Forms</a></li>
+                                        <li><a href="/doc/mandango-bundle/usage.html">Usage</a></li>
+                    </ul>
+    </div>
+
+    <h1>Validation</h1>
+
+    <p>To define the validation of your Mandango's documents you can use the config classes:</p>
+
+<div class="highlight"><pre><span class="l-Scalar-Plain">Model\Author</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">fields</span><span class="p-Indicator">:</span>
+        <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="p-Indicator">{</span> <span class="nv">type</span><span class="p-Indicator">:</span> <span class="nv">string</span><span class="p-Indicator">,</span> <span class="nv">validation</span><span class="p-Indicator">:</span> <span class="p-Indicator">[</span><span class="nv">NotBlank</span><span class="p-Indicator">:</span> <span class="nv">~</span><span class="p-Indicator">,</span> <span class="nv">Type</span><span class="p-Indicator">:</span> <span class="nv">string</span><span class="p-Indicator">]</span> <span class="p-Indicator">}</span>
+
+<span class="l-Scalar-Plain">Model\Category</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">fields</span><span class="p-Indicator">:</span>
+        <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="p-Indicator">{</span> <span class="nv">type</span><span class="p-Indicator">:</span> <span class="nv">string</span><span class="p-Indicator">,</span> <span class="nv">validation</span><span class="p-Indicator">:</span> <span class="p-Indicator">[</span><span class="nv">NotBlank</span><span class="p-Indicator">:</span> <span class="nv">~</span><span class="p-Indicator">,</span> <span class="nv">Type</span><span class="p-Indicator">:</span> <span class="nv">string</span><span class="p-Indicator">]</span> <span class="p-Indicator">}</span>
+
+<span class="l-Scalar-Plain">Model\Post</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">fields</span><span class="p-Indicator">:</span>
+        <span class="l-Scalar-Plain">title</span><span class="p-Indicator">:</span>       <span class="p-Indicator">{</span> <span class="nv">type</span><span class="p-Indicator">:</span> <span class="nv">string</span><span class="p-Indicator">,</span> <span class="nv">validation</span><span class="p-Indicator">:</span> <span class="p-Indicator">[</span><span class="nv">NotBlank</span><span class="p-Indicator">:</span> <span class="nv">~</span><span class="p-Indicator">,</span> <span class="nv">Type</span><span class="p-Indicator">:</span> <span class="nv">string</span><span class="p-Indicator">]</span> <span class="p-Indicator">}</span>
+        <span class="l-Scalar-Plain">summary</span><span class="p-Indicator">:</span>     <span class="p-Indicator">{</span> <span class="nv">type</span><span class="p-Indicator">:</span> <span class="nv">string</span><span class="p-Indicator">,</span> <span class="nv">validation</span><span class="p-Indicator">:</span> <span class="p-Indicator">[</span><span class="nv">NotBlank</span><span class="p-Indicator">:</span> <span class="nv">~</span><span class="p-Indicator">,</span> <span class="nv">Type</span><span class="p-Indicator">:</span> <span class="nv">string</span><span class="p-Indicator">]</span> <span class="p-Indicator">}</span>
+        <span class="l-Scalar-Plain">content</span><span class="p-Indicator">:</span>     <span class="p-Indicator">{</span> <span class="nv">type</span><span class="p-Indicator">:</span> <span class="nv">string</span><span class="p-Indicator">,</span> <span class="nv">validation</span><span class="p-Indicator">:</span> <span class="p-Indicator">[</span><span class="nv">NotBlank</span><span class="p-Indicator">:</span> <span class="nv">~</span><span class="p-Indicator">,</span> <span class="nv">Type</span><span class="p-Indicator">:</span> <span class="nv">string</span><span class="p-Indicator">]</span> <span class="p-Indicator">}</span>
+        <span class="l-Scalar-Plain">publishedAt</span><span class="p-Indicator">:</span> <span class="p-Indicator">{</span> <span class="nv">type</span><span class="p-Indicator">:</span> <span class="nv">date</span><span class="p-Indicator">,</span> <span class="nv">validation</span><span class="p-Indicator">:</span> <span class="p-Indicator">[</span><span class="nv">DateTime</span><span class="p-Indicator">:</span> <span class="nv">~</span><span class="p-Indicator">]</span> <span class="p-Indicator">}</span>
+        <span class="l-Scalar-Plain">isActive</span><span class="p-Indicator">:</span>    <span class="p-Indicator">{</span> <span class="nv">type</span><span class="p-Indicator">:</span> <span class="nv">boolean</span><span class="p-Indicator">,</span> <span class="nv">default</span><span class="p-Indicator">:</span> <span class="nv">false</span><span class="p-Indicator">,</span> <span class="nv">validation</span><span class="p-Indicator">:</span> <span class="p-Indicator">[</span><span class="nv">Type</span><span class="p-Indicator">:</span> <span class="nv">boolean</span><span class="p-Indicator">]</span> <span class="p-Indicator">}</span>
+    <span class="l-Scalar-Plain">referencesOne</span><span class="p-Indicator">:</span>
+        <span class="l-Scalar-Plain">author</span><span class="p-Indicator">:</span> <span class="p-Indicator">{</span> <span class="nv">class</span><span class="p-Indicator">:</span> <span class="nv">Model\PablodipMandangoBlogBundle\Author</span><span class="p-Indicator">,</span> <span class="nv">validation</span><span class="p-Indicator">:</span> <span class="p-Indicator">[</span><span class="nv">NotNull</span><span class="p-Indicator">:</span> <span class="nv">~</span><span class="p-Indicator">]</span>  <span class="p-Indicator">}</span>
+    <span class="l-Scalar-Plain">referencesMany</span><span class="p-Indicator">:</span>
+        <span class="l-Scalar-Plain">categories</span><span class="p-Indicator">:</span> <span class="p-Indicator">{</span> <span class="nv">class</span><span class="p-Indicator">:</span> <span class="nv">Model\PablodipMandangoBlogBundle\Category</span> <span class="p-Indicator">}</span>
+    <span class="l-Scalar-Plain">embeddedsOne</span><span class="p-Indicator">:</span>
+        <span class="l-Scalar-Plain">source</span><span class="p-Indicator">:</span> <span class="p-Indicator">{</span> <span class="nv">class</span><span class="p-Indicator">:</span> <span class="nv">Model\Source</span><span class="p-Indicator">,</span> <span class="nv">validation</span><span class="p-Indicator">:</span> <span class="p-Indicator">[</span><span class="nv">NotNull</span><span class="p-Indicator">:</span> <span class="nv">~</span><span class="p-Indicator">]</span> <span class="p-Indicator">}</span>
+
+<span class="l-Scalar-Plain">Model\Source</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">isEmbedded</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+    <span class="l-Scalar-Plain">fields</span><span class="p-Indicator">:</span>
+        <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="p-Indicator">{</span> <span class="nv">type</span><span class="p-Indicator">:</span> <span class="nv">string</span><span class="p-Indicator">,</span> <span class="nv">validation</span><span class="p-Indicator">:</span> <span class="p-Indicator">[</span><span class="nv">NotBlank</span><span class="p-Indicator">:</span> <span class="nv">~</span><span class="p-Indicator">]</span> <span class="p-Indicator">}</span>
+        <span class="l-Scalar-Plain">url</span><span class="p-Indicator">:</span>  <span class="p-Indicator">{</span> <span class="nv">type</span><span class="p-Indicator">:</span> <span class="nv">string</span> <span class="p-Indicator">}</span>
+</pre></div>
+
+
+<p>And generate the classes:</p>
+
+<div class="highlight"><pre>php app/console mandango:generate
+</pre></div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="ft">
+            <div class="ft_content">
+                <ul class="ft_menu">
+                    <li class="item">
+                        <h2>Mandango</h2>
+                        <ul>
+                            <li class="first">
+                                <a href="/">Home</a>
+                            </li>
+                            <li>
+                                <a href="/performance.html">Performance</a>
+                            </li>
+                            <li>
+                                <a href="/installation.html">Installation</a>
+                            </li>
+                            <li>
+                                <a href="/doc/">Documentation</a>
+                            </li>
+                            <li>
+                                <a href="/development.html">Development</a>
+                            </li>
+                            <li>
+                                <a href="/blog/">Blog</a>
+                            </li>
+                            <li>
+                                <a href="/about.html">About</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="item">
+                        <h2>Powered by</h2>
+                        <ul>
+                            <li class="first">
+                               <a href="http://www.php.net">PHP</a>
+                            </li>
+                            <li>
+                                <a href="http://www.mongodb.org">MongoDB</a>
+                            </li>
+                            <li>
+                                <a href="http://www.symfony.com">Symfony</a>
+                            </li>
+                            <li>
+                                <a href="http://git-scm.com">Git</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="feed">
+                    <a href="/blog/feed.xml">
+                        <img src="/images/feed.png" />
+                    </a>
+                </div>
+            </div>
+        </div>
+        <a href="http://github.com/mandango"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/images/forkme_right_red_aa0000.png" alt="Fork me on GitHub" /></a>
+        <script type="text/javascript">
+
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-23040635-1']);
+          _gaq.push(['_trackPageview']);
+
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+
+        </script>
+            </body>
+</html>

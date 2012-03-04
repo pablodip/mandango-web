@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <title>Defining Classes - Documentation - Mandango</title>
+        <link rel="stylesheet" href="/css/yui.css">
+        <link rel="stylesheet" href="/css/mandango.css">
+        <link rel="stylesheet" href="/css/pygments.css">
+    </head>
+    <body class="yui-skin-sam">
+        <div class="wrapper">
+            <div id="doc4">
+                <div id="hd">
+                    <div id="mainHeader" class="clearfix">
+                        <h1 class="mainTitle">
+                            <a href="/"><img src="/images/logo.png" alt="Mandango" /></a>
+                        </h1>
+                        <div class="slogan">The easy, powerful and ultrafast ODM for PHP and MongoDB.</div>
+                        <ul id="mainNav" class="clearfix">
+                                                        
+    <li><span><a href="/">Home</a></span></li>
+    <li><span><a href="/performance.html">Performance</a></span></li>
+    <li><span><a href="/installation.html">Installation</a></span></li>
+    <li><span class="current"><a href="/doc/">Documentation</a></span></li>
+    <li><span><a href="/development.html">Development</a></span></li>
+    <li><span><a href="/blog/">Blog</a></span></li>
+    <li><span><a href="/about.html">About</a></span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="bd">
+                    <div class="mainContent">
+                            <div class="related">
+        <ul>
+                            <li class="right"><a href="/doc/mondator/dumping-classes.html">Dumping Classes</a></li>
+                                        <li><a href="/doc/mondator/usage.html">Usage</a></li>
+                    </ul>
+    </div>
+
+    <h1>Defining Classes</h1>
+
+    <p>The definitions are used to indicate internally in the extensions which classes
+are going to be generated and how they will be.</p>
+
+<h2>Classes</h2>
+
+<p>The classes are defined with the class
+<em>Mandango&#92;Mondator&#92;Definition&#92;Definition</em>:</p>
+
+<div class="highlight"><pre><span class="k">use</span> <span class="nx">Mandango\Mondator\Definition\Definition</span><span class="p">;</span>
+
+<span class="c1">// constructor: class</span>
+<span class="nv">$definition</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Definition</span><span class="p">(</span><span class="nv">$class</span><span class="p">);</span>
+
+<span class="c1">// class</span>
+<span class="nv">$definition</span><span class="o">-&gt;</span><span class="na">setClass</span><span class="p">(</span><span class="s1">&#39;Model\Article&#39;</span><span class="p">);</span>
+<span class="nv">$class</span> <span class="o">=</span> <span class="nv">$definition</span><span class="o">-&gt;</span><span class="na">getClass</span><span class="p">();</span>
+
+<span class="c1">// namespace (only return) (null if it doesn&#39;t have)</span>
+<span class="nv">$namespace</span> <span class="o">=</span> <span class="nv">$definition</span><span class="o">-&gt;</span><span class="na">getNamespace</span><span class="p">();</span>
+
+<span class="c1">// classname (only return)</span>
+<span class="nv">$className</span> <span class="o">=</span> <span class="nv">$definition</span><span class="o">-&gt;</span><span class="na">getClassName</span><span class="p">();</span>
+
+<span class="c1">// parent class (full class)</span>
+<span class="nv">$definition</span><span class="o">-&gt;</span><span class="na">setParentClass</span><span class="p">(</span><span class="s1">&#39;\Model\Base\Article&#39;</span><span class="p">);</span>
+<span class="nv">$parentClass</span> <span class="nv">$definition</span><span class="o">-&gt;</span><span class="na">getParentClass</span><span class="p">();</span>
+
+<span class="c1">// interfaces</span>
+<span class="nv">$definition</span><span class="o">-&gt;</span><span class="na">addInterface</span><span class="p">(</span><span class="s1">&#39;\ArrayAccess&#39;</span><span class="p">);</span>
+<span class="nv">$interfaces</span> <span class="o">=</span> <span class="nv">$definition</span><span class="o">-&gt;</span><span class="na">getInterfaces</span><span class="p">();</span>
+
+<span class="c1">// abstract</span>
+<span class="nv">$definition</span><span class="o">-&gt;</span><span class="na">setIsAbstract</span><span class="p">(</span><span class="k">true</span><span class="p">);</span>
+<span class="nv">$isAbstract</span> <span class="o">=</span> <span class="nv">$definition</span><span class="o">-&gt;</span><span class="na">getIsAbstract</span><span class="p">();</span>
+
+<span class="c1">// DocComment</span>
+<span class="nv">$definition</span><span class="o">-&gt;</span><span class="na">setDocComment</span><span class="p">(</span><span class="s">&lt;&lt;&lt;EOF</span>
+<span class="s">/**</span>
+<span class="s"> * Article Document.</span>
+<span class="s"> */</span>
+<span class="s">EOF</span>
+<span class="p">);</span>
+<span class="nv">$docComment</span> <span class="o">=</span> <span class="nv">$definition</span><span class="o">-&gt;</span><span class="na">getDocComment</span><span class="p">();</span>
+</pre></div>
+
+
+<h3>Methods</h3>
+
+<p>The methods use the class <em>Mandango\Mondator\Definition\Method</em>:</p>
+
+<div class="highlight"><pre><span class="k">use</span> <span class="nx">Mandango\Mondator\Definition\Method</span><span class="p">;</span>
+
+<span class="c1">// constructor: visibility, name, arguments, code</span>
+<span class="nv">$method</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Method</span><span class="p">(</span><span class="s1">&#39;public&#39;</span><span class="p">,</span> <span class="s1">&#39;myMethod&#39;</span><span class="p">,</span> <span class="s1">&#39;$var1, $var2&#39;</span><span class="p">,</span> <span class="s">&lt;&lt;&lt;EOF</span>
+<span class="s">        return \$var1 + \$var2;</span>
+<span class="s">EOF</span>
+<span class="p">);</span>
+
+<span class="c1">// visibility</span>
+<span class="nv">$method</span><span class="o">-&gt;</span><span class="na">setVisibility</span><span class="p">(</span><span class="s1">&#39;protected&#39;</span><span class="p">);</span>
+<span class="nv">$visibility</span> <span class="o">=</span> <span class="nv">$method</span><span class="o">-&gt;</span><span class="na">getVisibility</span><span class="p">();</span>
+
+<span class="c1">// name</span>
+<span class="nv">$method</span><span class="o">-&gt;</span><span class="na">setName</span><span class="p">(</span><span class="s1">&#39;mySumMethod&#39;</span><span class="p">);</span>
+<span class="nv">$name</span> <span class="o">=</span> <span class="nv">$method</span><span class="o">-&gt;</span><span class="na">getName</span><span class="p">();</span>
+
+<span class="c1">// arguments</span>
+<span class="nv">$method</span><span class="o">-&gt;</span><span class="na">setArguments</span><span class="p">(</span><span class="s1">&#39;$sum1, $sum2&#39;</span><span class="p">);</span>
+<span class="nv">$arguments</span> <span class="o">=</span> <span class="nv">$method</span><span class="o">-&gt;</span><span class="na">getArguments</span><span class="p">();</span>
+
+<span class="c1">// code</span>
+<span class="nv">$method</span><span class="o">-&gt;</span><span class="na">setCode</span><span class="p">(</span><span class="s">&lt;&lt;&lt;EOF</span>
+<span class="s">        return \$sum1 + \$sum2;</span>
+<span class="s">EOF</span>
+<span class="p">);</span>
+<span class="nv">$code</span> <span class="o">=</span> <span class="nv">$method</span><span class="o">-&gt;</span><span class="na">getCode</span><span class="p">();</span>
+
+<span class="c1">// static</span>
+<span class="nv">$method</span><span class="o">-&gt;</span><span class="na">setIsStatic</span><span class="p">(</span><span class="k">true</span><span class="p">);</span>
+<span class="nv">$isStatic</span> <span class="o">=</span> <span class="nv">$method</span><span class="o">-&gt;</span><span class="na">getIsStatic</span><span class="p">();</span>
+
+<span class="c1">// abstract</span>
+<span class="nv">$method</span><span class="o">-&gt;</span><span class="na">setIsAbstract</span><span class="p">(</span><span class="k">true</span><span class="p">);</span>
+<span class="nv">$isAbstract</span> <span class="o">=</span> <span class="nv">$method</span><span class="o">-&gt;</span><span class="na">getIsAbstract</span><span class="p">();</span>
+
+<span class="c1">// docComment</span>
+<span class="nv">$method</span><span class="o">-&gt;</span><span class="na">setDocComment</span><span class="p">(</span><span class="s">&lt;&lt;&lt;EOF</span>
+<span class="s">    /**</span>
+<span class="s">     * Sum two numbers.</span>
+<span class="s">     *</span>
+<span class="s">     * @param mixed $sum1 The Sum1.</span>
+<span class="s">     * @param mixed $sum2 The Sum2.</span>
+<span class="s">     *</span>
+<span class="s">     * @return mixed The result.</span>
+<span class="s">     */</span>
+<span class="s">EOF</span>
+<span class="p">);</span>
+<span class="nv">$docComment</span> <span class="o">=</span> <span class="nv">$method</span><span class="o">-&gt;</span><span class="na">getDocComment</span><span class="p">();</span>
+</pre></div>
+
+
+<p>The methods are assigned to the definitions:</p>
+
+<div class="highlight"><pre><span class="c1">// assign one</span>
+<span class="nv">$definition</span><span class="o">-&gt;</span><span class="na">addMethod</span><span class="p">(</span><span class="nv">$method</span><span class="p">);</span>
+
+<span class="c1">// replace (deletes all that existed previously)</span>
+<span class="nv">$definition</span><span class="o">-&gt;</span><span class="na">setMethods</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="nv">$method1</span><span class="p">,</span> <span class="nv">$method2</span><span class="p">));</span>
+
+<span class="c1">// return all</span>
+<span class="nv">$methods</span> <span class="o">=</span> <span class="nv">$definition</span><span class="o">-&gt;</span><span class="na">getMethods</span><span class="p">();</span>
+</pre></div>
+
+
+<h3>Properties</h3>
+
+<p>The properties use the class <em>Mandango\Mondator\Definition\Property</em>:</p>
+
+<div class="highlight"><pre><span class="k">use</span> <span class="nx">Mandango\Mondator\Definition\Property</span><span class="p">;</span>
+
+<span class="c1">// constructor: visibility, name, value</span>
+<span class="nv">$property</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Property</span><span class="p">(</span><span class="s1">&#39;public&#39;</span><span class="p">,</span> <span class="s1">&#39;myProperty&#39;</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">);</span>
+
+<span class="c1">// visibility</span>
+<span class="nv">$property</span><span class="o">-&gt;</span><span class="na">setVisibility</span><span class="p">(</span><span class="s1">&#39;protected&#39;</span><span class="p">);</span>
+<span class="nv">$visibility</span> <span class="o">=</span> <span class="nv">$property</span><span class="o">-&gt;</span><span class="na">getVisibility</span><span class="p">();</span>
+
+<span class="c1">// name</span>
+<span class="nv">$property</span><span class="o">-&gt;</span><span class="na">setName</span><span class="p">(</span><span class="s1">&#39;myCustomProperty&#39;</span><span class="p">);</span>
+<span class="nv">$name</span> <span class="o">=</span> <span class="nv">$property</span><span class="o">-&gt;</span><span class="na">getName</span><span class="p">();</span>
+
+<span class="c1">// value</span>
+<span class="nv">$property</span><span class="o">-&gt;</span><span class="na">setValue</span><span class="p">(</span><span class="s1">&#39;someValue&#39;</span><span class="p">);</span>
+<span class="nv">$value</span> <span class="o">=</span> <span class="nv">$property</span><span class="o">-&gt;</span><span class="na">getValue</span><span class="p">();</span>
+
+<span class="c1">// static</span>
+<span class="nv">$property</span><span class="o">-&gt;</span><span class="na">setIsStatic</span><span class="p">(</span><span class="k">true</span><span class="p">);</span>
+<span class="nv">$isStatic</span> <span class="o">=</span> <span class="nv">$property</span><span class="o">-&gt;</span><span class="na">getIsStatic</span><span class="p">();</span>
+
+<span class="c1">// docComment</span>
+<span class="nv">$property</span><span class="o">-&gt;</span><span class="na">setDocComment</span><span class="p">(</span><span class="s">&lt;&lt;&lt;EOF</span>
+<span class="s">    /**</span>
+<span class="s">     * MyCustomProperty.</span>
+<span class="s">     */</span>
+<span class="s">EOF</span>
+<span class="p">);</span>
+<span class="nv">$docComment</span> <span class="o">=</span> <span class="nv">$property</span><span class="o">-&gt;</span><span class="na">getDocComment</span><span class="p">();</span>
+</pre></div>
+
+
+<p>The properties are assigned also to the definitions:</p>
+
+<div class="highlight"><pre><span class="c1">// assign one</span>
+<span class="nv">$definition</span><span class="o">-&gt;</span><span class="na">addProperty</span><span class="p">(</span><span class="nv">$property</span><span class="p">);</span>
+
+<span class="c1">// replace (deletes all that existed previously)</span>
+<span class="nv">$definition</span><span class="o">-&gt;</span><span class="na">setProperties</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="nv">$property1</span><span class="p">,</span> <span class="nv">$property2</span><span class="p">));</span>
+
+<span class="c1">// return all</span>
+<span class="nv">$properties</span> <span class="o">=</span> <span class="nv">$definition</span><span class="o">-&gt;</span><span class="na">getProperties</span><span class="p">();</span>
+</pre></div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="ft">
+            <div class="ft_content">
+                <ul class="ft_menu">
+                    <li class="item">
+                        <h2>Mandango</h2>
+                        <ul>
+                            <li class="first">
+                                <a href="/">Home</a>
+                            </li>
+                            <li>
+                                <a href="/performance.html">Performance</a>
+                            </li>
+                            <li>
+                                <a href="/installation.html">Installation</a>
+                            </li>
+                            <li>
+                                <a href="/doc/">Documentation</a>
+                            </li>
+                            <li>
+                                <a href="/development.html">Development</a>
+                            </li>
+                            <li>
+                                <a href="/blog/">Blog</a>
+                            </li>
+                            <li>
+                                <a href="/about.html">About</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="item">
+                        <h2>Powered by</h2>
+                        <ul>
+                            <li class="first">
+                               <a href="http://www.php.net">PHP</a>
+                            </li>
+                            <li>
+                                <a href="http://www.mongodb.org">MongoDB</a>
+                            </li>
+                            <li>
+                                <a href="http://www.symfony.com">Symfony</a>
+                            </li>
+                            <li>
+                                <a href="http://git-scm.com">Git</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="feed">
+                    <a href="/blog/feed.xml">
+                        <img src="/images/feed.png" />
+                    </a>
+                </div>
+            </div>
+        </div>
+        <a href="http://github.com/mandango"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/images/forkme_right_red_aa0000.png" alt="Fork me on GitHub" /></a>
+        <script type="text/javascript">
+
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-23040635-1']);
+          _gaq.push(['_trackPageview']);
+
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+
+        </script>
+            </body>
+</html>

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <title>Query Cache - Documentation - Mandango</title>
+        <link rel="stylesheet" href="/css/yui.css">
+        <link rel="stylesheet" href="/css/mandango.css">
+        <link rel="stylesheet" href="/css/pygments.css">
+    </head>
+    <body class="yui-skin-sam">
+        <div class="wrapper">
+            <div id="doc4">
+                <div id="hd">
+                    <div id="mainHeader" class="clearfix">
+                        <h1 class="mainTitle">
+                            <a href="/"><img src="/images/logo.png" alt="Mandango" /></a>
+                        </h1>
+                        <div class="slogan">The easy, powerful and ultrafast ODM for PHP and MongoDB.</div>
+                        <ul id="mainNav" class="clearfix">
+                                                        
+    <li><span><a href="/">Home</a></span></li>
+    <li><span><a href="/performance.html">Performance</a></span></li>
+    <li><span><a href="/installation.html">Installation</a></span></li>
+    <li><span class="current"><a href="/doc/">Documentation</a></span></li>
+    <li><span><a href="/development.html">Development</a></span></li>
+    <li><span><a href="/blog/">Blog</a></span></li>
+    <li><span><a href="/about.html">About</a></span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="bd">
+                    <div class="mainContent">
+                            <div class="related">
+        <ul>
+                            <li class="right"><a href="/doc/mandango-behaviors/introduction.html">Introduction</a></li>
+                                        <li><a href="/doc/mandango/custom-types.html">Custom types</a></li>
+                    </ul>
+    </div>
+
+    <h1>Query Cache</h1>
+
+    <p>The Mandango's Query Cache is one of the most impressive features of Mandango,
+because it multiplies the speed of your application and database.</p>
+
+<p>If we see the optimization page in the MongoDB documentation, we can see that
+<a href="http://www.mongodb.org/display/DOCS/Optimization#Optimization-Optimization%233%3ASelectonlyrelevantfields">querying only the data you use</a>
+you get a much better performance. And this is what the Query Cache does, but
+automatically, which is a huge advantage, because developers usually don't ;)</p>
+
+<p>Well, let's see an example:</p>
+
+<div class="highlight"><pre><span class="k">array</span><span class="p">(</span>
+    <span class="s1">&#39;Model\User&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s1">&#39;fields&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+            <span class="s1">&#39;username&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;string&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;password&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;string&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;salt&#39;</span>     <span class="o">=&gt;</span> <span class="s1">&#39;string&#39;</span><span class="p">,</span>
+            <span class="c1">// ... to 100</span>
+        <span class="p">),</span>
+    <span class="p">),</span>
+<span class="p">);</span>
+</pre></div>
+
+
+<p>What happen when you query an user with 100 fields? Usually your library queries
+the full user to the database and then you have the full user. So you query
+the full even if you are going to work only with few of its fields.</p>
+
+<p>What does Mandango do? Mandango saves automatically the fields you use in each
+query and it queries only those fields:</p>
+
+<div class="highlight"><pre><span class="c1">// first time</span>
+<span class="c1">// fields: array(&#39;_id&#39; =&gt; 1)</span>
+<span class="nv">$user</span> <span class="o">=</span> <span class="nv">$userRepository</span><span class="o">-&gt;</span><span class="na">createQuery</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">one</span><span class="p">();</span>
+<span class="nv">$user</span><span class="o">-&gt;</span><span class="na">getUsername</span><span class="p">()</span> <span class="c1">// query the username, and it saves the salt is queried</span>
+<span class="nv">$user</span><span class="o">-&gt;</span><span class="na">getSalt</span><span class="p">()</span> <span class="c1">// query the salt, and it saves the salt is queried</span>
+
+<span class="c1">// second time</span>
+<span class="c1">// fields: array(&#39;_id&#39; =&gt; 1, &#39;username&#39; =&gt; 1, &#39;salt&#39; =&gt; 1)</span>
+<span class="nv">$user</span> <span class="o">=</span> <span class="nv">$userRepository</span><span class="o">-&gt;</span><span class="na">createQuery</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">one</span><span class="p">();</span>
+</pre></div>
+
+
+<p>This way it does ever query the full user, so the speed is incredible.</p>
+
+<h2>Cases</h2>
+
+<p>Think in these cases:</p>
+
+<h3>Big fields</h3>
+
+<p>It's a really big advantage if you don't query the big fields of your documents
+if you don't need them. A huge improvement for the application (processing and
+memory) and for you database and network:</p>
+
+<div class="highlight"><pre><span class="k">array</span><span class="p">(</span>
+    <span class="s1">&#39;Model\Article&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s1">&#39;fields&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+            <span class="s1">&#39;title&#39;</span>   <span class="o">=&gt;</span> <span class="s1">&#39;string&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;summary&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;string&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;content&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;string&#39;</span><span class="p">,</span> <span class="c1">// huge field</span>
+            <span class="s1">&#39;image&#39;</span>   <span class="o">=&gt;</span> <span class="s1">&#39;bin_data&#39;</span> <span class="c1">// file</span>
+        <span class="p">),</span>
+    <span class="p">),</span>
+<span class="p">);</span>
+
+<span class="nv">$articles</span> <span class="o">=</span> <span class="nv">$articleRepository</span><span class="o">-&gt;</span><span class="na">createQuery</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">all</span><span class="p">();</span>
+<span class="c1">// array(&#39;_id&#39; =&gt; 1, &#39;title&#39; =&gt; 1, &#39;summary&#39; =&gt; 1)</span>
+<span class="c1">// without the content and image big fields, you are not using them!</span>
+
+<span class="k">foreach</span> <span class="p">(</span><span class="nv">$articles</span> <span class="k">as</span> <span class="nv">$article</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="nv">$article</span><span class="o">-&gt;</span><span class="na">getTitle</span><span class="p">();</span>
+    <span class="k">echo</span> <span class="nv">$article</span><span class="o">-&gt;</span><span class="na">getSummary</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h3>Collection with Embeddeds</h3>
+
+<p>This works also with embeddeds one:</p>
+
+<div class="highlight"><pre><span class="k">array</span><span class="p">(</span>
+    <span class="s1">&#39;Model\Article&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+        <span class="c1">// ...</span>
+        <span class="s1">&#39;embeddedsOne&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+            <span class="s1">&#39;source&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;class&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Model\Source&#39;</span><span class="p">),</span>
+        <span class="p">),</span>
+    <span class="p">),</span>
+    <span class="s1">&#39;Model\Source&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s1">&#39;isEmbedded&#39;</span> <span class="o">=&gt;</span> <span class="k">true</span><span class="p">,</span>
+        <span class="s1">&#39;fields&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+            <span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;string&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span>  <span class="o">=&gt;</span> <span class="s1">&#39;string&#39;</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">),</span>
+<span class="p">);</span>
+
+<span class="nv">$article</span> <span class="o">=</span> <span class="nv">$articleRepository</span><span class="o">-&gt;</span><span class="na">createQuery</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">one</span><span class="p">();</span>
+<span class="c1">// array(&#39;_id&#39; =&gt; 1, &#39;source.name&#39; =&gt; 1)</span>
+
+<span class="nv">$article</span><span class="o">-&gt;</span><span class="na">getSource</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getName</span><span class="p">();</span>
+</pre></div>
+
+
+<h3>Taking data from references</h3>
+
+<p>A normal use case is to take data from references::</p>
+
+$article = $articleRepository-&gt;createQuery()-&gt;one();
+// array('_id' =&gt; 1)
+
+$article-&gt;getAuthor()-&gt;getName();
+// to author: array('_id' =&gt; 1, 'name' =&gt; 1)
+// it does not matter how many fields the author has!
+
+<h3>References</h3>
+
+<p>The Query Cache works also with the Mandango's references query, which is great.
+This is done automatically when you access to a reference:</p>
+
+<div class="highlight"><pre><span class="nv">$articles</span> <span class="o">=</span> <span class="nv">$articleRepository</span><span class="o">-&gt;</span><span class="na">createQuery</span><span class="p">()</span><span class="cm">/*-&gt;references(&#39;author)*/</span><span class="o">-&gt;</span><span class="na">all</span><span class="p">();</span>
+<span class="k">foreach</span> <span class="p">(</span><span class="nv">$articles</span> <span class="k">as</span> <span class="nv">$article</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$article</span><span class="o">-&gt;</span><span class="na">getAuthor</span><span class="p">();</span> <span class="c1">// queried!</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h2>Conclusion</h2>
+
+<p>Like you have seen, this is indeed a really good feature for your
+application's performance, and you even don't need to do anything apart from
+use Mandango :)</p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="ft">
+            <div class="ft_content">
+                <ul class="ft_menu">
+                    <li class="item">
+                        <h2>Mandango</h2>
+                        <ul>
+                            <li class="first">
+                                <a href="/">Home</a>
+                            </li>
+                            <li>
+                                <a href="/performance.html">Performance</a>
+                            </li>
+                            <li>
+                                <a href="/installation.html">Installation</a>
+                            </li>
+                            <li>
+                                <a href="/doc/">Documentation</a>
+                            </li>
+                            <li>
+                                <a href="/development.html">Development</a>
+                            </li>
+                            <li>
+                                <a href="/blog/">Blog</a>
+                            </li>
+                            <li>
+                                <a href="/about.html">About</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="item">
+                        <h2>Powered by</h2>
+                        <ul>
+                            <li class="first">
+                               <a href="http://www.php.net">PHP</a>
+                            </li>
+                            <li>
+                                <a href="http://www.mongodb.org">MongoDB</a>
+                            </li>
+                            <li>
+                                <a href="http://www.symfony.com">Symfony</a>
+                            </li>
+                            <li>
+                                <a href="http://git-scm.com">Git</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="feed">
+                    <a href="/blog/feed.xml">
+                        <img src="/images/feed.png" />
+                    </a>
+                </div>
+            </div>
+        </div>
+        <a href="http://github.com/mandango"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/images/forkme_right_red_aa0000.png" alt="Fork me on GitHub" /></a>
+        <script type="text/javascript">
+
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-23040635-1']);
+          _gaq.push(['_trackPageview']);
+
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+
+        </script>
+            </body>
+</html>

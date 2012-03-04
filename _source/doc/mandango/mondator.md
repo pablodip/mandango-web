@@ -1,0 +1,139 @@
+---
+title: Mondator
+---
+
+Mondator is an easy and flexible class generator for PHP.
+
+Philosophy
+----------
+
+Mondator uses ``config classes`` and ``extensions`` to generate the
+classes. The config classes have the information about the classes,
+and the extensions process those data and indicate which classes have to be
+generated, where and how they must be.
+
+Mondator is extremely flexible, because the classes that are generated from the
+config classes depend on the extensions that you have assigned them.
+
+Mandango uses an extension of Mondator to generate the classes of documents,
+repositories and queries.
+
+A simple example
+----------------
+
+We are going to do a simple example with Mondator using Mandango, this way
+you will see step by step what you will have to do to use it and you will
+understand how it works.
+
+### Create a Mondator
+
+    [php]
+    use Mandango\Mondator\Mondator;
+
+    $mondator = new Mondator();
+
+### Assign the Config Classes
+
+The config classes contain the information of the classes:
+
+    [php]
+    $mondator->setConfigClasses(array(
+        'Model\Article' => array(
+            'fields' => array(
+                'title'   => 'string',
+                'content' => 'string',
+            ),
+        ),
+    ));
+
+.. tip::
+  You can use a language like [YAML](http://www.yaml.org) to work with the
+  config classes easily.
+
+### Assign the extensions
+
+The extensions are the ones ordered to process the config classes and
+generate class definitions and outputs. The definitions indicate which
+classes will be generated, and the outputs where they will be generated.
+
+The order in which the extensions are assigned is the order in which they are
+processed, so it is very important that it is the right order.
+
+The extensions also accept options to be able to customize its operation:
+
+    [php]
+    $mondator->setExtensions(array(
+        new Mandango\Extension\Core(array(
+            'metadata_factory_class' => 'Model\Mapping\MetadataFactory',
+            'metadta_factory_output' => $modelDir.'/Mapping',
+            'default_output'         => $modelDir,
+        )),
+    ));
+
+> [note]
+> Adding more extensions you will be able to customize the generated classes
+> as much as you want, or even generate more classes.
+
+### Process the Mondator
+
+Once you have assigned the config classes and extensions, you only have to
+process the mondator to generate the files of the classes:
+
+    [php]
+    $mondator->process();
+
+A full example
+--------------
+
+Let's see a full example, which you can use to start using Mandango:
+
+    [php]
+    $mandangoDir = '/path/to/mandango';
+    $modelDir  = '/path/to/Model';
+
+    // classes loader
+    require_once($mandangoDir.'/vendor/symfony/src/Symony/Component/ClassLoader/UniversalClassLoader.php');
+
+    use Symfony\Component\ClassLoader\UniversalClassLoader;
+
+    $loader = new UniversalClassLoader();
+    $loader->registerNamespaces(array(
+        'Mandango\Mondator' => $mandangoDir.'/vendor/mondator/src',
+        'Mandango'          => $mandangoDir.'/src/',
+        'Model'             => dirname($modelDir),
+    ));
+    $loader->register();
+
+    // start Mondator
+    use Mandango\Mondator\Mondator;
+
+    $mondator = new Mondator();
+
+    // assign the config classes
+    $mondator->setConfigClasses(array(
+        'Model\Article' => array(
+            'fields' => array(
+                'title'   => 'string',
+                'content' => 'string',
+            ),
+        ),
+    ));
+
+    // assign extensions
+    $mondator->setExtensions(array(
+        new Mandango\Extension\Core(array(
+            'metadata_factory_class'  => 'Model\Mapping\MetadataFactory',
+            'metadata_factory_output' => $modelDir.'/Mapping',
+            'default_output'          => $modelDir,
+        )),
+    ));
+
+    // process
+    $mondator->process();
+
+If you take a look at the generated files, you will see that there are empty
+classes that you can customize, and others *Base* that **you must not modify**
+because they are **overwritten** every time the mondator is processed.
+
+> [note]
+>  If you want to know more about Mondator you can browse its documentation.

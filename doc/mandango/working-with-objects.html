@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <title>Working with objects - Documentation - Mandango</title>
+        <link rel="stylesheet" href="/css/yui.css">
+        <link rel="stylesheet" href="/css/mandango.css">
+        <link rel="stylesheet" href="/css/pygments.css">
+    </head>
+    <body class="yui-skin-sam">
+        <div class="wrapper">
+            <div id="doc4">
+                <div id="hd">
+                    <div id="mainHeader" class="clearfix">
+                        <h1 class="mainTitle">
+                            <a href="/"><img src="/images/logo.png" alt="Mandango" /></a>
+                        </h1>
+                        <div class="slogan">The easy, powerful and ultrafast ODM for PHP and MongoDB.</div>
+                        <ul id="mainNav" class="clearfix">
+                                                        
+    <li><span><a href="/">Home</a></span></li>
+    <li><span><a href="/performance.html">Performance</a></span></li>
+    <li><span><a href="/installation.html">Installation</a></span></li>
+    <li><span class="current"><a href="/doc/">Documentation</a></span></li>
+    <li><span><a href="/development.html">Development</a></span></li>
+    <li><span><a href="/blog/">Blog</a></span></li>
+    <li><span><a href="/about.html">About</a></span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="bd">
+                    <div class="mainContent">
+                            <div class="related">
+        <ul>
+                            <li class="right"><a href="/doc/mandango/repositories.html">Repositories</a></li>
+                                        <li><a href="/doc/mandango/relation-mapping.html">Relation Mapping</a></li>
+                    </ul>
+    </div>
+
+    <h1>Working with objects</h1>
+
+    <p>You have to create the documents through the <code>create</code> method of the mandango,
+passing it the document class:</p>
+
+<div class="highlight"><pre><span class="nv">$article</span> <span class="o">=</span> <span class="nv">$mandango</span><span class="o">-&gt;</span><span class="na">create</span><span class="p">(</span><span class="s1">&#39;Model\Article&#39;</span><span class="p">);</span>
+</pre></div>
+
+
+<p>Mandango uses setters and getters to modify and access to the document's data.</p>
+
+<h2>Initializing</h2>
+
+<p>To initialize the documents you have to create the <code>initialize</code> method, where you
+can choose the arguments, and pass them as an array creating the documents:</p>
+
+<div class="highlight"><pre><span class="c1">// the initialize method</span>
+<span class="k">public</span> <span class="k">function</span> <span class="nf">initialize</span><span class="p">(</span><span class="nx">Author</span> <span class="nv">$author</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">setAuthor</span><span class="p">(</span><span class="nv">$author</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// creating the document</span>
+<span class="nv">$author</span> <span class="o">=</span> <span class="nv">$mandango</span><span class="o">-&gt;</span><span class="na">create</span><span class="p">(</span><span class="s1">&#39;Model\Author&#39;</span><span class="p">);</span>
+<span class="nv">$article</span> <span class="o">=</span> <span class="nv">$mandango</span><span class="o">-&gt;</span><span class="na">create</span><span class="p">(</span><span class="s1">&#39;Model\Article&#39;</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="nv">$author</span><span class="p">));</span>
+</pre></div>
+
+
+<h2>Identifier</h2>
+
+<p>To access the identifier <code>_id</code> of the mongo documents it is used the
+<code>-&gt;getId()</code> method. It returns <code>null</code> if the document is new:</p>
+
+<div class="highlight"><pre><span class="nv">$id</span> <span class="o">=</span> <span class="nv">$article</span><span class="o">-&gt;</span><span class="na">getId</span><span class="p">();</span>
+</pre></div>
+
+
+<h2>New check</h2>
+
+<p>To check if a document exists in the database you have to use the <code>-&gt;isNew()</code>
+method:</p>
+
+<div class="highlight"><pre><span class="nv">$isNew</span> <span class="o">=</span> <span class="nv">$article</span><span class="o">-&gt;</span><span class="na">isNew</span><span class="p">();</span>
+</pre></div>
+
+
+<h2>Fields</h2>
+
+<p>You have to use just the setters and getters:</p>
+
+<div class="highlight"><pre><span class="c1">// setter</span>
+<span class="nv">$article</span><span class="o">-&gt;</span><span class="na">setTitle</span><span class="p">(</span><span class="s1">&#39;Mandango rocks!&#39;</span><span class="p">);</span>
+
+<span class="c1">// getter</span>
+<span class="nv">$title</span> <span class="o">=</span> <span class="nv">$article</span><span class="o">-&gt;</span><span class="na">getTitle</span><span class="p">();</span>
+</pre></div>
+
+
+<h2>References</h2>
+
+<h3>One</h3>
+
+<p>To assign references to one you simply have to assign the referenced document
+to the reference's setter:</p>
+
+<div class="highlight"><pre><span class="nv">$author</span> <span class="o">=</span> <span class="nv">$mandango</span><span class="o">-&gt;</span><span class="na">create</span><span class="p">(</span><span class="s1">&#39;Mandango\Author&#39;</span><span class="p">);</span>
+<span class="nv">$author</span><span class="o">-&gt;</span><span class="na">setName</span><span class="p">(</span><span class="s1">&#39;pablodip&#39;</span><span class="p">);</span>
+
+<span class="nv">$article</span><span class="o">-&gt;</span><span class="na">setAuthor</span><span class="p">(</span><span class="nv">$author</span><span class="p">);</span>
+</pre></div>
+
+
+<p>And to access the referenced objects is in the same way but with the getter:</p>
+
+<div class="highlight"><pre><span class="nv">$author</span> <span class="o">=</span> <span class="nv">$article</span><span class="o">-&gt;</span><span class="na">getAuthor</span><span class="p">();</span>
+</pre></div>
+
+
+<p>If there is no a reference document it just returns <code>null</code>.</p>
+
+<blockquote class="mandango_blockquote mandango_blockquote_note"><p>
+  The referenced document is queried automatically to the database if it has
+  not been queried before.</p></blockquote>
+
+<h3>Many</h3>
+
+<p>To work with references to many it is used a <code>Mandango\ReferenceGroup</code> object,
+to store the referenced documents.</p>
+
+<p>Adding and deleting referenced documents:</p>
+
+<div class="highlight"><pre><span class="c1">// retrieving the group</span>
+<span class="nv">$categories</span> <span class="o">=</span> <span class="nv">$article</span><span class="o">-&gt;</span><span class="na">getCategories</span><span class="p">();</span>
+
+<span class="c1">// adding one by one</span>
+<span class="nv">$categories</span><span class="o">-&gt;</span><span class="na">add</span><span class="p">(</span><span class="nv">$category1</span><span class="p">);</span>
+<span class="nv">$categories</span><span class="o">-&gt;</span><span class="na">add</span><span class="p">(</span><span class="nv">$category2</span><span class="p">);</span>
+
+<span class="c1">// adding several at the same time</span>
+<span class="nv">$categories</span><span class="o">-&gt;</span><span class="na">add</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="nv">$category1</span><span class="p">,</span> <span class="nv">$category2</span><span class="p">));</span>
+
+<span class="c1">// shortcut to add from the document</span>
+<span class="nv">$article</span><span class="o">-&gt;</span><span class="na">addCategories</span><span class="p">(</span><span class="nv">$category</span><span class="p">);</span> <span class="c1">// one</span>
+<span class="nv">$article</span><span class="o">-&gt;</span><span class="na">addCategories</span><span class="p">(</span><span class="nv">$categories</span><span class="p">);</span> <span class="c1">// several</span>
+
+<span class="c1">// remove one by one</span>
+<span class="nv">$categories</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">remove</span><span class="p">(</span><span class="nv">$category1</span><span class="p">);</span>
+<span class="nv">$categories</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">remove</span><span class="p">(</span><span class="nv">$category2</span><span class="p">);</span>
+
+<span class="c1">// removing several at the same time</span>
+<span class="nv">$categories</span><span class="o">-&gt;</span><span class="na">remove</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="nv">$category1</span><span class="p">,</span> <span class="nv">$category2</span><span class="p">));</span>
+
+<span class="c1">// shortcut to remove from the document</span>
+<span class="nv">$article</span><span class="o">-&gt;</span><span class="na">removeCategories</span><span class="p">(</span><span class="nv">$category</span><span class="p">);</span> <span class="c1">// one</span>
+<span class="nv">$article</span><span class="o">-&gt;</span><span class="na">removeCategories</span><span class="p">(</span><span class="nv">$categories</span><span class="p">);</span> <span class="c1">// several</span>
+
+<span class="c1">// replacing (delete the existent ones and add the new ones)</span>
+<span class="nv">$article</span><span class="o">-&gt;</span><span class="na">getCategories</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">replace</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="nv">$category2</span><span class="p">,</span> <span class="nv">$category4</span><span class="p">,</span> <span class="nv">$category6</span><span class="p">));</span>
+</pre></div>
+
+
+<p>To work with the references to many the <code>ReferenceGroup</code> has some useful methods:</p>
+
+<div class="highlight"><pre><span class="c1">// retrieving all documents (saved + add - removed)</span>
+<span class="nv">$categories</span> <span class="o">=</span> <span class="nv">$categories</span><span class="o">-&gt;</span><span class="na">all</span><span class="p">();</span>
+
+<span class="c1">// count the documents</span>
+<span class="nv">$count</span> <span class="o">=</span> <span class="nv">$categories</span><span class="o">-&gt;</span><span class="na">count</span><span class="p">();</span>
+</pre></div>
+
+
+<p>The <code>ReferenceGroup</code> class implements the <code>Countable</code> and <code>IteratorAggregate</code>
+interfaces, so you can use them as well:</p>
+
+<div class="highlight"><pre><span class="c1">// saved</span>
+<span class="k">foreach</span> <span class="p">(</span><span class="nv">$categories</span> <span class="k">as</span> <span class="nv">$category</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+<span class="p">}</span>
+<span class="k">foreach</span> <span class="p">(</span><span class="nv">$article</span><span class="o">-&gt;</span><span class="na">getCategories</span><span class="p">()</span> <span class="k">as</span> <span class="nv">$category</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+<span class="p">}</span>
+
+<span class="c1">// count</span>
+<span class="nv">$count</span> <span class="o">=</span> <span class="nb">count</span><span class="p">(</span><span class="nv">$categories</span><span class="p">);</span>
+<span class="nv">$count</span> <span class="o">=</span> <span class="nb">count</span><span class="p">(</span><span class="nv">$article</span><span class="o">-&gt;</span><span class="na">getCategories</span><span class="p">());</span>
+</pre></div>
+
+
+<blockquote class="mandango_blockquote mandango_blockquote_note"><p>
+  The <code>ReferenceGroup</code> has also an extremely useful <em>createQuery</em> method that we will see
+  later of see the queries.</p></blockquote>
+
+<h2>Embeddeds</h2>
+
+<p>To work with the embeddeds is quite similar to work with the references.</p>
+
+<h3>One</h3>
+
+<div class="highlight"><pre><span class="nv">$article</span><span class="o">-&gt;</span><span class="na">setSource</span><span class="p">(</span><span class="nv">$source</span><span class="p">);</span>
+
+<span class="nv">$source</span> <span class="o">=</span> <span class="nv">$article</span><span class="o">-&gt;</span><span class="na">getSource</span><span class="p">();</span>
+</pre></div>
+
+
+<h3>To many (many)</h3>
+
+<p>To work with the embeddeds many is used the <code>EmbeddedGroup</code> class instead, but
+it works in the similar way that the <code>ReferenceGroup</code> one:</p>
+
+<div class="highlight"><pre><span class="nv">$article</span><span class="o">-&gt;</span><span class="na">addComments</span><span class="p">(</span><span class="nv">$comment1</span><span class="p">);</span>
+
+<span class="nv">$article</span><span class="o">-&gt;</span><span class="na">removeComments</span><span class="p">(</span><span class="nv">$comment1</span><span class="p">);</span>
+
+<span class="c1">// ...</span>
+</pre></div>
+
+
+<h2>Relations</h2>
+
+<p>The relations can only be accessed, and they return a document or a
+<code>Mandango\Query</code> object depending on the type:</p>
+
+<div class="highlight"><pre><span class="c1">// one</span>
+<span class="nv">$phonenumber</span> <span class="o">=</span> <span class="nv">$author</span><span class="o">-&gt;</span><span class="na">getPhonenumber</span><span class="p">();</span> <span class="c1">// document</span>
+
+<span class="c1">// one_many</span>
+<span class="nv">$articles</span> <span class="o">=</span> <span class="nv">$authors</span><span class="o">-&gt;</span><span class="na">getArticles</span><span class="p">();</span> <span class="c1">// Mandango\Query</span>
+
+<span class="c1">// many_many</span>
+<span class="nv">$articles</span> <span class="o">=</span> <span class="nv">$category</span><span class="o">-&gt;</span><span class="na">getArticles</span><span class="p">();</span> <span class="c1">// Mandango\Query</span>
+</pre></div>
+
+
+<blockquote class="mandango_blockquote mandango_blockquote_note"><p>
+  We will see later why a query object is returned instead of an array
+  of documents. A query object is much more useful.</p></blockquote>
+
+<h2>Save and delete</h2>
+
+<p>To save and delete Mandango documents you can use the methods
+<code>-&gt;save()</code> y <code>-&gt;delete()</code> of the documents:</p>
+
+<div class="highlight"><pre><span class="c1">// save</span>
+<span class="nv">$article</span><span class="o">-&gt;</span><span class="na">save</span><span class="p">();</span>
+
+<span class="c1">// delete</span>
+<span class="nv">$article</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">();</span>
+</pre></div>
+
+
+<blockquote class="mandango_blockquote mandango_blockquote_note"><p>
+  These methods are not in the embedded documents. You have to save always
+  the documents through the main document.</p></blockquote>
+
+<h2>Fluent interface</h2>
+
+<p>A fluent interface is implemented in the mandango documents to be able to work
+easily with them:</p>
+
+<div class="highlight"><pre><span class="nv">$author</span> <span class="o">=</span> <span class="nv">$mandango</span><span class="o">-&gt;</span><span class="na">create</span><span class="p">(</span><span class="s1">&#39;Model\Author&#39;</span><span class="p">);</span>
+<span class="nv">$author</span><span class="o">-&gt;</span><span class="na">setName</span><span class="p">(</span><span class="s1">&#39;pablodip&#39;</span><span class="p">);</span>
+<span class="nv">$author</span><span class="o">-&gt;</span><span class="na">save</span><span class="p">();</span>
+
+<span class="nv">$article</span> <span class="o">=</span> <span class="nv">$mandango</span><span class="o">-&gt;</span><span class="na">create</span><span class="p">(</span><span class="s1">&#39;Model\Article&#39;</span><span class="p">);</span>
+<span class="nv">$article</span><span class="o">-&gt;</span><span class="na">setAuthor</span><span class="p">(</span><span class="nv">$author</span><span class="p">);</span>
+<span class="nv">$article</span><span class="o">-&gt;</span><span class="na">setTitle</span><span class="p">(</span><span class="nv">$title</span><span class="p">);</span>
+<span class="nv">$article</span><span class="o">-&gt;</span><span class="na">setContent</span><span class="p">(</span><span class="nv">$content</span><span class="p">);</span>
+<span class="nv">$article</span><span class="o">-&gt;</span><span class="na">save</span><span class="p">();</span>
+
+<span class="c1">// fluent interface</span>
+<span class="nv">$author</span> <span class="o">=</span> <span class="nv">$mandango</span><span class="o">-&gt;</span><span class="na">create</span><span class="p">(</span><span class="s1">&#39;Model\Author&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">setName</span><span class="p">(</span><span class="s1">&#39;pablodip&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">save</span><span class="p">();</span>
+
+<span class="nv">$article</span> <span class="o">=</span> <span class="nv">$mandango</span><span class="o">-&gt;</span><span class="na">create</span><span class="p">(</span><span class="s1">&#39;Model\Article&#39;</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">setAuthor</span><span class="p">(</span><span class="nv">$author</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">setTitle</span><span class="p">(</span><span class="nv">$title</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">setContent</span><span class="p">(</span><span class="nv">$content</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">save</span><span class="p">()</span>
+<span class="p">;</span>
+</pre></div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="ft">
+            <div class="ft_content">
+                <ul class="ft_menu">
+                    <li class="item">
+                        <h2>Mandango</h2>
+                        <ul>
+                            <li class="first">
+                                <a href="/">Home</a>
+                            </li>
+                            <li>
+                                <a href="/performance.html">Performance</a>
+                            </li>
+                            <li>
+                                <a href="/installation.html">Installation</a>
+                            </li>
+                            <li>
+                                <a href="/doc/">Documentation</a>
+                            </li>
+                            <li>
+                                <a href="/development.html">Development</a>
+                            </li>
+                            <li>
+                                <a href="/blog/">Blog</a>
+                            </li>
+                            <li>
+                                <a href="/about.html">About</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="item">
+                        <h2>Powered by</h2>
+                        <ul>
+                            <li class="first">
+                               <a href="http://www.php.net">PHP</a>
+                            </li>
+                            <li>
+                                <a href="http://www.mongodb.org">MongoDB</a>
+                            </li>
+                            <li>
+                                <a href="http://www.symfony.com">Symfony</a>
+                            </li>
+                            <li>
+                                <a href="http://git-scm.com">Git</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="feed">
+                    <a href="/blog/feed.xml">
+                        <img src="/images/feed.png" />
+                    </a>
+                </div>
+            </div>
+        </div>
+        <a href="http://github.com/mandango"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/images/forkme_right_red_aa0000.png" alt="Fork me on GitHub" /></a>
+        <script type="text/javascript">
+
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-23040635-1']);
+          _gaq.push(['_trackPageview']);
+
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+
+        </script>
+            </body>
+</html>

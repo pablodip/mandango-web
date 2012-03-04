@@ -1,0 +1,46 @@
+{% extends 'views/layout.html.twig' %}
+
+{% block title %}Documentation - Mandango{% endblock %}
+{% block menu_current_tab %}documentation{% endblock %}
+
+{% block content %}
+    <h2>Mandango</h2>
+
+    <p>The easy, powerful and ultrafast ODM for PHP and MongoDB.</p>
+
+    <ul>
+        {% for chapter in dynamic('doc', {'filters': {'site_path': '^/mandango/'}}) %}
+            <li><a href="{{ path(chapter.path) }}">{{ chapter.title }}</a></li>
+        {% endfor %}
+    </ul>
+
+    <h2>MandangoBundle</h2>
+
+    <p>Bundle to use Mandango with Symfony2.</p>
+
+    <ul>
+        {% for chapter in dynamic('doc', {'filters': {'site_path': '^/mandango-bundle/'}}) %}
+            <li><a href="{{ path(chapter.path) }}">{{ chapter.title }}</a></li>
+        {% endfor %}
+    </ul>
+
+    <h2>Mandango Behaviors</h2>
+
+    <p>Official Mandango's behaviors.</p>
+
+    <ul>
+        {% for chapter in dynamic('doc', {'filters': {'site_path': '^/mandango-behaviors/'}}) %}
+            <li><a href="{{ path(chapter.path) }}">{{ chapter.title }}</a></li>
+        {% endfor %}
+    </ul>
+
+    <h2>Mondator</h2>
+
+    <p>The easy and flexible class generator for PHP.</p>
+
+    <ul>
+        {% for chapter in dynamic('doc', {'filters': {'site_path': '^/mondator/'}}) %}
+            <li><a href="{{ path(chapter.path) }}">{{ chapter.title }}</a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}

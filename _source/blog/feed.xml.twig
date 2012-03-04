@@ -4,7 +4,7 @@
     <subtitle>Latest Blog Posts</subtitle>
     <link href="{{ url('/blog/feed.xml') }}" rel="self" />
     <link href="{{ url('/') }}" />
-    <updated>{{ dynamic_last('blog').date | date('c') }}</updated>
+    <updated>{{ "now" | date('c') }}</updated>
     <id>{{ url('/blog/feed.xml') | sha1 }}</id>
     {% for post in dynamic('blog') %}
         <entry>
