@@ -1,0 +1,32 @@
+body {
+	background-color: #eaeaea;
+	font-family: monospace;
+	color: #111111;
+}
+
+#content {
+	position: absolute;
+	left: 10px;
+	right: 10px;
+	top: 10px;
+	bottom: 10px;
+	border: solid 1px #111111;
+	text-align: center;
+	-webkit-display: flex;
+	display: flex;
+	-webkit-justify-content: center;
+	justify-content: center;
+	-webkit-flex-direction: column;
+	flex-direction: column;
+}
+
+.numbers {
+	font-size: 80px;	
+}
+
+#controls {
+	margin: 0 auto;
+	position: absolute;
+	bottom: 20px;
+	left: 20px;
+}
